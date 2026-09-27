@@ -980,21 +980,6 @@ input[type=range] { accent-color: var(--rojo-brasa); width: 160px; }
            ============================================================ -->
       <div class="tarjeta-juego oculto" id="panel-galeria">
         <h3 class="tarjeta-titulo">Galería de Enlaces</h3>
-        <p class="tarjeta-texto">
-          Se arma sola a partir de un archivo <code>reaper-links.json</code> que subís junto a este HTML en tu repo de
-          GitHub. Cada vez que edites ese archivo y actualices la web, los botones se actualizan solos — no hace
-          falta tocar este HTML. Formato del archivo (una lista de objetos):
-        </p>
-        <pre style="white-space:pre-wrap;background:var(--negro);border:1px solid var(--rojo-oscuro);border-radius:10px;padding:12px;font-size:0.78rem;color:#ead9c9;margin:0;">[
-  { "nombre": "Twitter", "vector": "https://tu-link-al-icono.svg", "web": "https://twitter.com/tu_usuario" },
-  { "nombre": "Discord", "vector": "https://tu-link-al-icono.png", "web": "https://discord.gg/tu-server" }
-]</pre>
-        <p class="tarjeta-texto" style="font-size:0.8rem;">
-          "vector" es el link a la imagen del ícono (svg, png, lo que sea), "web" es a dónde te lleva el botón, y
-          "nombre" es la palabrita que aparece abajo por si te olvidás qué es. Ojo: esto solo funciona subido a
-          GitHub Pages (o cualquier servidor) — abriendo el HTML como archivo local en tu compu el navegador no te
-          va a dejar leer el .json por seguridad.
-        </p>
 
         <div class="controles-conversor">
           <button class="btn-accion" id="btnRecargarGaleria">Recargar</button>
