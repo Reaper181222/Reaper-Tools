@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reaper Tools</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Rubik:wght@400;600;800&family=Cinzel+Decorative:wght@400;700;900&family=MedievalSharp&family=Pirata+One&family=Metal+Mania&family=Creepster&family=Butcherman&family=Nosifer&family=Uncial+Antiqua&family=Eagle+Lake&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 /* =========================================================
    REAPER TOOLS
@@ -321,130 +321,48 @@ input[type=range] { accent-color: var(--rojo-brasa); width: 160px; }
 }
 .rgb-inputs input::-webkit-inner-spin-button { opacity: 0.6; }
 
-/* ---------- tarjeta de OC ---------- */
-.form-oc {
+/* ---------- editar colores ---------- */
+.fila-slider { display: flex; flex-direction: column; gap: 4px; }
+.fila-slider label { font-size: 0.85rem; color: #ead9c9; display: flex; justify-content: space-between; }
+.fila-slider input[type=range] { width: 100%; }
+
+/* ---------- galería de enlaces ---------- */
+.grid-galeria {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
   gap: 14px;
 }
-.campo-oc { display: flex; flex-direction: column; gap: 6px; }
-.campo-oc label { font-size: 0.8rem; color: #ead9c9; font-weight: 600; }
-.campo-oc input[type=text],
-.campo-oc input[type=number],
-.campo-oc textarea,
-.campo-oc select {
-  padding: 9px 11px;
-  border-radius: 10px;
-  border: 2px solid var(--rojo-fuego);
-  background: var(--negro);
-  color: var(--hueso);
-  font-family: var(--fuente-texto);
-  font-size: 0.88rem;
-}
-.campo-oc select { cursor: pointer; }
-.campo-oc textarea { resize: vertical; min-height: 54px; }
-.campo-oc.ancho { grid-column: 1 / -1; }
-.fila-color-oc { display: flex; align-items: center; gap: 8px; }
-.fila-fuente-personalizada { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
-.fila-fuente-personalizada input { flex: 1; min-width: 160px; }
-.nota-oc { font-size: 0.78rem; color: #b98f7e; margin: 2px 0 0; }
-
-/* ===== NUEVO: slider de tono (matiz) — elegir color arrastrando, no solo con hexa =====
-   El slider siempre queda a Saturación/Luminosidad fijas (ver GAMA_S / GAMA_L en el JS).
-   Así, sea cual sea el método usado para elegir el color (hexa o arrastre), el resultado
-   SIEMPRE tiene el mismo brillo y saturación: lo único que cambia es el tono (matiz). */
-.slider-tono {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 16px;
-  border-radius: 10px;
-  outline: none;
-  cursor: pointer;
-  background: linear-gradient(to right,
-    hsl(0,72%,48%), hsl(60,72%,48%), hsl(120,72%,48%), hsl(180,72%,48%),
-    hsl(240,72%,48%), hsl(300,72%,48%), hsl(360,72%,48%));
-  border: 2px solid var(--negro);
-}
-.slider-tono::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 18px; height: 18px;
-  border-radius: 50%;
-  background: var(--hueso);
-  border: 3px solid var(--negro);
-  cursor: pointer;
-}
-.slider-tono::-moz-range-thumb {
-  width: 18px; height: 18px;
-  border-radius: 50%;
-  background: var(--hueso);
-  border: 3px solid var(--negro);
-  cursor: pointer;
-}
-
-/* ===== NUEVO: fila de ajuste fino (X / Y / Escala) para acomodar la foto dentro del marco ===== */
-.fila-ajuste-oc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.fila-ajuste-oc label { font-size: 0.72rem; color: #b98f7e; display: block; margin-bottom: 3px; }
-.fila-ajuste-oc input[type=number] { width: 100%; }
-
-/* ===== NUEVO: lista de fuentes/créditos del universo elegido (viene del JSON, no hay que tipearla) ===== */
-.fuentes-universo-oc {
-  font-size: 0.78rem;
-  color: #b98f7e;
-  margin: 2px 0 0;
+.item-galeria {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: transform 0.15s ease;
 }
-.fuentes-universo-oc a { color: var(--rojo-brasa); }
-.fuentes-universo-oc .sin-fuentes { opacity: 0.6; font-style: italic; }
-
-/* ===== NUEVO: gifs flotantes decorativos sobre la tarjeta (capa arriba del marco) ===== */
-.capa-gifs-oc {
-  position: absolute;
-  inset: 8px;
-  pointer-events: none;
-  z-index: 3;
-}
-.gif-flotante-oc {
-  position: absolute;
-  max-width: 15%;
-  max-height: 34%;
-  filter: none;
-  display: none;
-}
-.gif-flotante-oc.visible { display: block; }
-.gif-flotante-oc.esquina-izq { left: -3%; top: -8%; animation: flotarIzq 5.5s ease-in-out infinite; }
-.gif-flotante-oc.esquina-der { right: -3%; top: -8%; animation: flotarDer 6.2s ease-in-out infinite; }
-@keyframes flotarIzq {
-  0%   { transform: translateY(0) rotate(0deg); }
-  50%  { transform: translateY(-6%) rotate(-8deg); }
-  100% { transform: translateY(0) rotate(0deg); }
-}
-@keyframes flotarDer {
-  0%   { transform: translateY(0) rotate(0deg); }
-  50%  { transform: translateY(-6%) rotate(8deg); }
-  100% { transform: translateY(0) rotate(0deg); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .gif-flotante-oc { animation: none; }
-}
-
-.vista-previa-oc {
-  position: relative;
-  background-image:
-    linear-gradient(45deg, #2a2222 25%, transparent 25%),
-    linear-gradient(-45deg, #2a2222 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #2a2222 75%),
-    linear-gradient(-45deg, transparent 75%, #2a2222 75%);
-  background-size: 22px 22px;
-  background-position: 0 0, 0 11px, 11px -11px, -11px 0px;
-  background-color: #150f0f;
+.item-galeria:hover, .item-galeria:focus-visible { transform: translateY(-3px); }
+.icono-galeria {
+  width: 64px;
+  height: 64px;
   border-radius: 14px;
-  padding: 8px;
-  border: 2px solid var(--rojo-fuego);
+  background: linear-gradient(135deg, var(--rojo-fuego), var(--rojo-oscuro));
+  border: 2px solid var(--negro);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--sombra-fuego);
+  overflow: hidden;
+  flex-shrink: 0;
 }
-#canvasPreviewOC { width: 100%; height: auto; display: block; border-radius: 8px; }
+.icono-galeria img { width: 68%; height: 68%; object-fit: contain; }
+.etiqueta-galeria {
+  font-size: 0.7rem;
+  color: var(--hueso);
+  text-align: center;
+  max-width: 84px;
+  overflow-wrap: anywhere;
+  line-height: 1.2;
+}
 
 /* ---------- pie ---------- */
 .pie { text-align: center; padding: 24px 20px; color: #b98f7e; font-size: 0.85rem; }
@@ -475,7 +393,9 @@ input[type=range] { accent-color: var(--rojo-brasa); width: 160px; }
       <h2 class="subtitulo">Elegí una herramienta</h2>
       <div class="tabla-juegos" id="tabla-herramientas">
 
-        <!-- ===== BOTÓN: Png/Jpg a Webp — inicio ===== -->
+        <!-- ============================================================
+             BOTÓN: Png/Jpg a Webp
+             ============================================================ -->
         <button class="btn-juego" data-herramienta="webp">
           <span class="btn-icono">
             <svg viewBox="0 0 24 24" fill="none" stroke="#fff3e6" stroke-width="1.8">
@@ -489,44 +409,27 @@ input[type=range] { accent-color: var(--rojo-brasa); width: 160px; }
             <span class="btn-subtexto">convertí varias de una</span>
           </span>
         </button>
-        <!-- ===== BOTÓN: Png/Jpg a Webp — fin ===== -->
 
-        <!-- ===== BOTÓN: Tarjeta de OC — inicio (ESTE es el que tocamos) ===== -->
-        <button class="btn-juego" data-herramienta="oc">
+        <!-- ============================================================
+             BOTÓN: Webp a Png
+             ============================================================ -->
+        <button class="btn-juego" data-herramienta="webppng">
           <span class="btn-icono">
             <svg viewBox="0 0 24 24" fill="none" stroke="#fff3e6" stroke-width="1.8">
-              <rect x="2.5" y="5" width="19" height="14" rx="2.5"/>
-              <circle cx="8.5" cy="11" r="2"/>
-              <path d="M5.5 16c.6-1.8 2-2.6 3-2.6s2.4.8 3 2.6" stroke-linecap="round"/>
-              <path d="M14 9.5h5M14 13h3.5" stroke-linecap="round"/>
+              <rect x="3" y="3" width="18" height="14" rx="2"/>
+              <path d="M3 13l4-4 5 5 3-3 6 6" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="16" cy="8" r="1.4" fill="#fff3e6" stroke="none"/>
             </svg>
           </span>
           <span class="btn-texto">
-            Tarjeta de OC
-            <span class="btn-subtexto">armá tu ficha y exportá gif</span>
+            Webp a Png
+            <span class="btn-subtexto">convertí varias de una</span>
           </span>
         </button>
-        <!-- ===== BOTÓN: Tarjeta de OC — fin ===== -->
 
-        <!-- ===== BOTÓN: Tarjeta de Canon — inicio (no tocado) ===== -->
-        <button class="btn-juego" data-herramienta="canon">
-          <span class="btn-icono">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#fff3e6" stroke-width="1.8">
-              <rect x="2.5" y="5" width="19" height="14" rx="2.5"/>
-              <circle cx="8.5" cy="11" r="2"/>
-              <path d="M5.5 16c.6-1.8 2-2.6 3-2.6s2.4.8 3 2.6" stroke-linecap="round"/>
-              <path d="M14 9.5h5M14 13h3.5" stroke-linecap="round"/>
-              <path d="M18.5 4.5l1 1-1 1-1-1z" fill="#fff3e6" stroke="none"/>
-            </svg>
-          </span>
-          <span class="btn-texto">
-            Tarjeta de Canon
-            <span class="btn-subtexto">próximamente</span>
-          </span>
-        </button>
-        <!-- ===== BOTÓN: Tarjeta de Canon — fin ===== -->
-
-        <!-- ===== BOTÓN: Gif a Mp4 c/ Sonido — inicio (no tocado) ===== -->
+        <!-- ============================================================
+             BOTÓN: Gif a Mp4 c/ Sonido
+             ============================================================ -->
         <button class="btn-juego" data-herramienta="gifmp4">
           <span class="btn-icono">
             <svg viewBox="0 0 24 24" fill="none" stroke="#fff3e6" stroke-width="1.8">
@@ -540,11 +443,150 @@ input[type=range] { accent-color: var(--rojo-brasa); width: 160px; }
             <span class="btn-subtexto">gif + audio &#8594; video</span>
           </span>
         </button>
-        <!-- ===== BOTÓN: Gif a Mp4 c/ Sonido — fin ===== -->
+
+        <!-- ============================================================
+             BOTÓN: Quitar Marca de Agua
+             ============================================================ -->
+        <button class="btn-juego" data-herramienta="marcadeagua">
+          <span class="btn-icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff3e6" stroke-width="1.8">
+              <rect x="3" y="3" width="18" height="18" rx="3"/>
+              <path d="M8 16l3-8 2 5 1.5-3L17 16" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M6 6l2 2M18 6l-2 2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="btn-texto">
+            Quitar Marca de Agua
+            <span class="btn-subtexto">rellena la zona marcada</span>
+          </span>
+        </button>
+
+        <!-- ============================================================
+             BOTÓN: Editar Colores
+             ============================================================ -->
+        <button class="btn-juego" data-herramienta="editarcolores">
+          <span class="btn-icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff3e6" stroke-width="1.8">
+              <circle cx="12" cy="12" r="9"/>
+              <circle cx="9" cy="10" r="1.3" fill="#fff3e6" stroke="none"/>
+              <circle cx="14" cy="9" r="1.3" fill="#fff3e6" stroke="none"/>
+              <circle cx="15.5" cy="13" r="1.3" fill="#fff3e6" stroke="none"/>
+              <path d="M12 15c1.5 0 2-1 1.2-2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="btn-texto">
+            Editar Colores
+            <span class="btn-subtexto">tono, saturación, luz y sombra</span>
+          </span>
+        </button>
+
+        <!-- ============================================================
+             BOTÓN: Ejecutar Python
+             ============================================================ -->
+        <button class="btn-juego" data-herramienta="python">
+          <span class="btn-icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff3e6" stroke-width="1.8">
+              <path d="M9 4h5a2 2 0 0 1 2 2v3H9a2 2 0 0 0-2 2v2H4V8a4 4 0 0 1 4-4z"/>
+              <path d="M15 20H10a2 2 0 0 1-2-2v-3h7a2 2 0 0 0 2-2V11h3v5a4 4 0 0 1-4 4z"/>
+              <circle cx="8" cy="6.3" r="0.6" fill="#fff3e6" stroke="none"/>
+              <circle cx="16" cy="17.7" r="0.6" fill="#fff3e6" stroke="none"/>
+            </svg>
+          </span>
+          <span class="btn-texto">
+            Ejecutar Python
+            <span class="btn-subtexto">.py con pillow y otras libs</span>
+          </span>
+        </button>
+
+        <!-- ============================================================
+             BOTÓN: Quitar Fondo (Blanco/Negro)
+             ============================================================ -->
+        <button class="btn-juego" data-herramienta="quitarfondo">
+          <span class="btn-icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff3e6" stroke-width="1.8">
+              <rect x="3" y="3" width="18" height="18" rx="3" stroke-dasharray="3 3"/>
+              <circle cx="12" cy="12" r="5"/>
+            </svg>
+          </span>
+          <span class="btn-texto">
+            Quitar Fondo
+            <span class="btn-subtexto">fondo blanco o negro liso</span>
+          </span>
+        </button>
+
+        <!-- ============================================================
+             BOTÓN: Degradados
+             ============================================================ -->
+        <button class="btn-juego" data-herramienta="degradados">
+          <span class="btn-icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff3e6" stroke-width="1.8">
+              <rect x="3" y="3" width="18" height="18" rx="3"/>
+              <path d="M3 15h18" stroke-opacity="0.9"/>
+              <path d="M3 18h18" stroke-opacity="0.5"/>
+              <path d="M3 21h18" stroke-opacity="0.2"/>
+            </svg>
+          </span>
+          <span class="btn-texto">
+            Degradados
+            <span class="btn-subtexto">bordes a color o transparencia</span>
+          </span>
+        </button>
+
+        <!-- ============================================================
+             BOTÓN: Reemplazar Color
+             ============================================================ -->
+        <button class="btn-juego" data-herramienta="reemplazarcolor">
+          <span class="btn-icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff3e6" stroke-width="1.8">
+              <circle cx="9" cy="12" r="5"/>
+              <path d="M14 12h6M17 9v6" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="btn-texto">
+            Reemplazar Color
+            <span class="btn-subtexto">cambiá una gama por otra</span>
+          </span>
+        </button>
+
+        <!-- ============================================================
+             BOTÓN: Estilo Artístico
+             ============================================================ -->
+        <button class="btn-juego" data-herramienta="estiloartistico">
+          <span class="btn-icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff3e6" stroke-width="1.8">
+              <path d="M4 20c4-1 5-5 7-9s4-6 8-6" stroke-linecap="round"/>
+              <path d="M6 16l3 3M9 13l3 3M12 10l3 3" stroke-linecap="round" stroke-opacity="0.7"/>
+            </svg>
+          </span>
+          <span class="btn-texto">
+            Estilo Artístico
+            <span class="btn-subtexto">boceto, pergamino, grabado</span>
+          </span>
+        </button>
+
+        <!-- ============================================================
+             BOTÓN: Galería de Enlaces
+             ============================================================ -->
+        <button class="btn-juego" data-herramienta="galeria">
+          <span class="btn-icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff3e6" stroke-width="1.8">
+              <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+              <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+              <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+              <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+            </svg>
+          </span>
+          <span class="btn-texto">
+            Galería
+            <span class="btn-subtexto">accesos rápidos a tus links</span>
+          </span>
+        </button>
 
       </div>
 
-      <!-- PANEL: conversor webp -->
+      <!-- ============================================================
+           PANEL: Png/Jpg a Webp
+           ============================================================ -->
       <div class="tarjeta-juego oculto" id="panel-webp">
         <h3 class="tarjeta-titulo">Png/Jpg a Webp</h3>
         <p class="tarjeta-texto">Elegí varios archivos o arrastralos acá. Todo se convierte en tu navegador, no se sube nada a ningún lado.</p>
@@ -566,7 +608,30 @@ input[type=range] { accent-color: var(--rojo-brasa); width: 160px; }
       </div>
 
 
-      <!-- PANEL: gif a mp4 con sonido -->
+      <!-- ============================================================
+           PANEL: Webp a Png
+           ============================================================ -->
+      <div class="tarjeta-juego oculto" id="panel-webppng">
+        <h3 class="tarjeta-titulo">Webp a Png</h3>
+        <p class="tarjeta-texto">Elegí varios .webp o arrastralos acá. Se convierten a PNG (con transparencia si la tienen) en tu navegador, no se sube nada a ningún lado.</p>
+
+        <div class="dropzone" id="dropWebpPng">
+          <p><strong>Hacé clic para elegir archivos</strong> o arrastralos acá.</p>
+          <input type="file" id="inputWebpPng" accept="image/webp" multiple>
+        </div>
+
+        <div class="controles-conversor">
+          <button class="btn-accion" id="descargarTodoWebpPng" disabled>Descargar todos</button>
+          <button class="btn-accion" id="limpiarTodoWebpPng" disabled>Limpiar</button>
+        </div>
+
+        <div class="resultados" id="resultadosWebpPng"></div>
+      </div>
+
+
+      <!-- ============================================================
+           PANEL: Gif a Mp4 c/ Sonido
+           ============================================================ -->
       <div class="tarjeta-juego oculto" id="panel-gifmp4">
         <h3 class="tarjeta-titulo">Gif a Mp4 c/ Sonido</h3>
         <p class="tarjeta-texto">Subí un GIF (con transparencia si tiene) y un audio (wav, mp3 o mp4). Ojo: el MP4 no soporta fondo transparente en ningún reproductor, así que elegís un color de fondo — o marcás "sin fondo" para exportar en WEBM con transparencia (sirve para editores tipo Premiere/After Effects/OBS, no para WhatsApp ni YouTube).</p>
@@ -606,133 +671,337 @@ input[type=range] { accent-color: var(--rojo-brasa); width: 160px; }
         <div id="resultadoGifMp4"></div>
       </div>
 
-      <!-- PANEL: tarjeta de OC (todo este panel + su JS al final del archivo es lo que se tocó) -->
-      <div class="tarjeta-juego oculto" id="panel-oc">
-        <h3 class="tarjeta-titulo">Tarjeta de OC</h3>
-        <p class="tarjeta-texto">Armá la ficha de tu personaje y exportala como GIF animado con fondo transparente. Todo se genera en tu navegador, no se sube nada a ningún lado. Los marcos, gifs y links de cada universo se cargan solos desde <code>universos.json</code> — vos solo cargás fotos y escribís texto.</p>
+      <!-- ============================================================
+           PANEL: Quitar Marca de Agua
+           ============================================================ -->
+      <div class="tarjeta-juego oculto" id="panel-marcadeagua">
+        <h3 class="tarjeta-titulo">Quitar Marca de Agua</h3>
+        <p class="tarjeta-texto">
+          Subí una imagen, marcá con el mouse (clic y arrastrá) el rectángulo que cubre la marca de agua o el logo,
+          y aplicá "Quitar marca". Rellena esa zona a partir de la textura de los bordes cercanos — anda bastante bien
+          en fondos lisos o con textura pareja (cielo, pared, degradé), pero en fondos complejos puede quedar borroso
+          justo ahí. No usa ninguna IA ni servicio externo, es matemática local con canvas — si querés una reconstrucción
+          perfecta tipo IA generativa, eso sí necesitaría una API paga aparte (no está incluida acá).
+        </p>
 
-        <div class="dropzone" id="dropFotoOC">
-          <p><strong>Hacé clic para elegir la foto principal del personaje</strong></p>
-          <input type="file" id="inputFotoOC" accept="image/png,image/jpeg,image/webp">
-        </div>
-        <p class="nota-oc" id="nombreFotoOC"></p>
-
-        <!-- NUEVO: segunda foto (no cuadrada), va de fondo semitransparente con el tono principal -->
-        <div class="dropzone" id="dropFotoSecundariaOC">
-          <p><strong>(Opcional) Hacé clic para elegir una segunda foto — va de fondo, semitransparente</strong></p>
-          <input type="file" id="inputFotoSecundariaOC" accept="image/png,image/jpeg,image/webp">
-        </div>
-        <p class="nota-oc" id="nombreFotoSecundariaOC"></p>
-
-        <div class="form-oc">
-          <div class="campo-oc">
-            <label for="inputNombreOC">Nombre del OC</label>
-            <input type="text" id="inputNombreOC" placeholder="Jörgen Ackerman" maxlength="40">
-          </div>
-
-          <div class="campo-oc">
-            <label for="inputFcOC">FC (face claim)</label>
-            <input type="text" id="inputFcOC" placeholder="Lu Feng — Little Mushroom" maxlength="50">
-          </div>
-
-          <div class="campo-oc">
-            <label for="selectUniversoOC">Universo</label>
-            <select id="selectUniversoOC"></select>
-            <!-- NUEVO: fuentes/créditos del universo, vienen del JSON, no hay que tipearlos -->
-            <div class="fuentes-universo-oc" id="fuentesUniversoOC"></div>
-          </div>
-
-          <div class="campo-oc">
-            <label for="inputNumeroOC">Número</label>
-            <input type="number" id="inputNumeroOC" placeholder="4" min="0" max="999">
-          </div>
-
-          <div class="campo-oc">
-            <label for="colorOC">Color principal (tono)</label>
-            <div class="fila-color-oc">
-              <input type="color" id="colorOC" value="#c81d25">
-              <input type="text" id="hexColorOC" class="input-color-texto" value="#c81d25" maxlength="7" spellcheck="false" aria-label="Color en hexadecimal">
-            </div>
-            <!-- NUEVO: elegir el color arrastrando una barra de tonos (matiz), sin tocar brillo/saturación -->
-            <input type="range" id="sliderTonoOC" class="slider-tono" min="0" max="360" step="1" value="352" aria-label="Elegir tono arrastrando">
-            <p class="nota-oc">El tono se puede elegir por hexa o arrastrando la barra: en ambos casos se guarda solo el matiz, así el brillo y la saturación no cambian.</p>
-          </div>
-
-          <div class="campo-oc">
-            <label for="selectEfectoTextoOC">Efecto del nombre</label>
-            <select id="selectEfectoTextoOC">
-              <option value="solido">Sólido</option>
-              <option value="degradado">Degradado</option>
-              <option value="luces">Luces (glow)</option>
-              <option value="ambos" selected>Degradado + luces</option>
-            </select>
-          </div>
-
-          <div class="campo-oc">
-            <label for="selectFuenteOC">Fuente</label>
-            <select id="selectFuenteOC"></select>
-          </div>
-
-          <!-- NUEVO: tamaño de la minidescripción — de esto depende el alto de toda la tarjeta -->
-          <div class="campo-oc">
-            <label for="rangoTamDescOC">Tamaño de mini descripción (agranda/achica la tarjeta)</label>
-            <input type="range" id="rangoTamDescOC" min="10" max="20" step="0.5" value="12.5">
-          </div>
-
-          <div class="campo-oc ancho">
-            <label for="textareaDescOC">Mini descripción</label>
-            <textarea id="textareaDescOC" placeholder="Bla bla, minidescripción, bla bla" maxlength="220"></textarea>
-          </div>
-
-          <!-- NUEVO: ajuste fino de la foto principal dentro del marco del personaje -->
-          <div class="campo-oc ancho">
-            <label>Ajuste de la foto dentro del marco (X / Y / Escala 1:1)</label>
-            <div class="fila-ajuste-oc">
-              <div>
-                <label for="inputFotoXOC">X (px)</label>
-                <input type="number" id="inputFotoXOC" value="0" step="1">
-              </div>
-              <div>
-                <label for="inputFotoYOC">Y (px)</label>
-                <input type="number" id="inputFotoYOC" value="0" step="1">
-              </div>
-              <div>
-                <label for="inputFotoEscalaOC">Escala</label>
-                <input type="number" id="inputFotoEscalaOC" value="1" step="0.05" min="0.2" max="3">
-              </div>
-            </div>
-            <p class="nota-oc">1 = tamaño normal. Subilo para achicar el encuadre (efecto zoom) o movelo con X/Y si la foto no queda centrada bajo el marco.</p>
-          </div>
-
-          <div class="campo-oc ancho">
-            <label>Fuente personalizada (opcional — subila a tu GitHub y pegá el link directo al .woff2/.ttf)</label>
-            <div class="fila-fuente-personalizada">
-              <input type="text" id="inputFuenteNombreOC" placeholder="Nombre de familia, ej: HarryP">
-              <input type="text" id="inputFuenteUrlOC" placeholder="https://raw.githubusercontent.com/.../fuente.woff2">
-              <button class="btn-accion" id="btnCargarFuenteOC" type="button">Cargar fuente</button>
-            </div>
-            <p class="nota-oc" id="estadoFuenteOC"></p>
-          </div>
+        <div class="dropzone" id="dropMarca">
+          <p><strong>Hacé clic para elegir la imagen</strong> o arrastrala acá.</p>
+          <input type="file" id="inputMarca" accept="image/png,image/jpeg,image/webp">
         </div>
 
-        <div class="vista-previa-oc">
-          <canvas id="canvasPreviewOC" width="720" height="212"></canvas>
-          <!-- NUEVO: capa de gifs flotantes opcionales, por arriba del marco -->
-          <div class="capa-gifs-oc">
-            <img class="gif-flotante-oc esquina-izq" id="gifFlotanteIzqOC" alt="">
-            <img class="gif-flotante-oc esquina-der" id="gifFlotanteDerOC" alt="">
-          </div>
-        </div>
+        <div id="zonaMarca" class="oculto" style="margin-top:6px;">
+          <p class="tarjeta-texto" style="font-size:0.82rem;">Dibujá un rectángulo sobre la marca de agua:</p>
+          <canvas id="canvasMarca" style="max-width:100%;border-radius:12px;border:2px solid var(--rojo-fuego);cursor:crosshair;touch-action:none;"></canvas>
 
-        <button class="btn-accion" id="btnGenerarOC">Generar GIF sin fondo</button>
-        <p class="tarjeta-texto" id="estadoOC" style="font-size:0.85rem;color:#b98f7e;"></p>
-        <div id="resultadoOC"></div>
+          <div class="controles-conversor" style="margin-top:14px;">
+            <label for="pasadasMarca">Intensidad</label>
+            <input type="range" id="pasadasMarca" min="4" max="40" step="1" value="18">
+            <span class="valor-calidad" id="valorPasadasMarca">18</span>
+            <button class="btn-accion" id="btnQuitarMarca" disabled>Quitar marca</button>
+            <button class="btn-accion" id="btnDeshacerMarca" disabled>Deshacer</button>
+          </div>
+          <p class="tarjeta-texto" id="estadoMarca" style="font-size:0.85rem;color:#b98f7e;"></p>
+          <div id="resultadoMarca"></div>
+        </div>
       </div>
 
-      <!-- PANEL: tarjeta de Canon -->
-      <div class="tarjeta-juego oculto" id="panel-canon">
-        <h3 class="tarjeta-titulo">Tarjeta de Canon</h3>
-        <p class="tarjeta-texto">Sin función todavía. Misma idea que la de OC, pero pensada para personajes de canon.</p>
+      <!-- ============================================================
+           PANEL: Editar Colores
+           ============================================================ -->
+      <div class="tarjeta-juego oculto" id="panel-editarcolores">
+        <h3 class="tarjeta-titulo">Editar Colores</h3>
+        <p class="tarjeta-texto">
+          Subí un PNG, JPG o GIF. Si el GIF tiene movimiento se mantiene en la vista previa animada; si la imagen tiene
+          transparencia, se respeta. Los cambios de tono/saturación/luz/sombra/contraste se ven en vivo. Ojo: si el
+          original es un GIF animado, se descarga como WEBM (no hay codificador de GIF acá), y la transparencia en ese
+          WEBM depende de que tu navegador la soporte al grabar.
+        </p>
+
+        <div class="dropzone" id="dropColores">
+          <p><strong>Hacé clic para elegir la imagen</strong> o arrastrala acá.</p>
+          <input type="file" id="inputColores" accept="image/png,image/jpeg,image/gif,image/webp">
+        </div>
+
+        <div id="zonaColores" class="oculto" style="margin-top:6px;">
+          <canvas id="canvasColores" style="max-width:100%;border-radius:12px;border:2px solid var(--rojo-fuego);background:
+            repeating-conic-gradient(#2a2020 0% 25%, #1a1414 0% 50%) 50% / 20px 20px;"></canvas>
+
+          <div class="controles-conversor" style="margin-top:14px;">
+            <label style="display:flex;align-items:center;gap:6px;">
+              <input type="checkbox" id="checkMonocromo" style="width:16px;height:16px;">
+              Monocromo (un solo tono)
+            </label>
+            <label for="colorMonocromo">Color</label>
+            <input type="color" id="colorMonocromo" value="#c81d25">
+          </div>
+
+          <div class="controles-conversor" style="margin-top:10px;flex-direction:column;align-items:stretch;gap:10px;">
+            <div class="fila-slider"><label>Tono <span id="valTono">0</span>°</label><input type="range" id="sliderTono" min="-180" max="180" value="0"></div>
+            <div class="fila-slider"><label>Saturación <span id="valSat">0</span></label><input type="range" id="sliderSat" min="-100" max="100" value="0"></div>
+            <div class="fila-slider"><label>Luz <span id="valLuz">0</span></label><input type="range" id="sliderLuz" min="-100" max="100" value="0"></div>
+            <div class="fila-slider"><label>Sombras <span id="valSombra">0</span></label><input type="range" id="sliderSombra" min="-100" max="100" value="0"></div>
+            <div class="fila-slider"><label>Contraste <span id="valContraste">0</span></label><input type="range" id="sliderContraste" min="-100" max="100" value="0"></div>
+          </div>
+
+          <div class="controles-conversor" style="margin-top:14px;">
+            <button class="btn-accion" id="btnResetColores">Reiniciar</button>
+            <button class="btn-accion" id="btnDescargarColores" disabled>Descargar</button>
+          </div>
+          <p class="tarjeta-texto" id="estadoColores" style="font-size:0.85rem;color:#b98f7e;"></p>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           PANEL: Ejecutar Python
+           ============================================================ -->
+      <div class="tarjeta-juego oculto" id="panel-python">
+        <h3 class="tarjeta-titulo">Ejecutar Python</h3>
+        <p class="tarjeta-texto">
+          Subí un .py (o pegalo abajo) y lo corremos acá con Pyodide — Python compilado a WebAssembly, corre en tu
+          navegador, no se manda a ningún servidor. La primera vez tarda porque baja el intérprete. Si el script
+          importa librerías como Pillow, numpy, pandas, etc. tratamos de instalarlas solas — las que Pyodide trae
+          precompiladas andan directo, el resto se intenta bajar de PyPI con micropip si es puro-Python. No va a poder
+          abrir ventanas (tkinter), sockets, ni tocar tu disco real: solo lee los archivos que le subas acá abajo y
+          escribe en una carpeta virtual, de la que después descargás lo que haya generado.
+        </p>
+
+        <div class="dropzone" id="dropPy">
+          <p><strong>Hacé clic para elegir un .py</strong> o arrastralo acá (también podés pegar el código abajo).</p>
+          <input type="file" id="inputPy" accept=".py,text/x-python">
+        </div>
+
+        <textarea id="editorPython" rows="10" spellcheck="false"
+          style="width:100%;background:var(--negro);color:var(--hueso);border:2px solid var(--rojo-fuego);border-radius:12px;padding:12px;font-family:monospace;font-size:0.82rem;resize:vertical;"
+          placeholder="# pegá o subí tu script acá"></textarea>
+
+        <div class="dropzone" id="dropArchivosPy">
+          <p><strong>(Opcional) Archivos que el script necesita leer</strong> — clic o arrastrá acá.</p>
+          <input type="file" id="inputArchivosPy" multiple>
+        </div>
+        <p class="tarjeta-texto" id="listaArchivosPy" style="font-size:0.8rem;color:#b98f7e;margin:0;"></p>
+
+        <div class="controles-conversor">
+          <button class="btn-accion" id="btnEjecutarPython">Ejecutar</button>
+          <button class="btn-accion" id="btnLimpiarPython">Limpiar</button>
+        </div>
+        <p class="tarjeta-texto" id="estadoPython" style="font-size:0.85rem;color:#b98f7e;"></p>
+        <pre id="salidaPython" style="white-space:pre-wrap;word-break:break-word;background:var(--negro);border:1px solid var(--rojo-oscuro);border-radius:10px;padding:12px;max-height:260px;overflow:auto;font-size:0.8rem;margin:0;"></pre>
+        <div id="resultadoPython"></div>
+      </div>
+
+      <!-- ============================================================
+           PANEL: Quitar Fondo (Blanco/Negro)
+           ============================================================ -->
+      <div class="tarjeta-juego oculto" id="panel-quitarfondo">
+        <h3 class="tarjeta-titulo">Quitar Fondo (Blanco/Negro)</h3>
+        <p class="tarjeta-texto">
+          Pensado para fondos lisos (blanco o negro parejo, tipo foto de estudio o render). Marca como transparente
+          todo lo que esté cerca de ese color, con un borde suavizado para que no quede recortado feo. No sirve para
+          fondos con textura, degradados fuertes o fotos "normales" — para eso hace falta segmentación por IA, que no
+          está acá.
+        </p>
+
+        <div class="dropzone" id="dropFondo">
+          <p><strong>Hacé clic para elegir la imagen</strong> o arrastrala acá.</p>
+          <input type="file" id="inputFondo" accept="image/png,image/jpeg,image/webp">
+        </div>
+
+        <div id="zonaFondo" class="oculto" style="margin-top:6px;">
+          <canvas id="canvasFondo" style="max-width:100%;border-radius:12px;border:2px solid var(--rojo-fuego);background:
+            repeating-conic-gradient(#2a2020 0% 25%, #1a1414 0% 50%) 50% / 20px 20px;"></canvas>
+
+          <div class="controles-conversor" style="margin-top:14px;">
+            <label style="display:flex;align-items:center;gap:6px;">
+              <input type="radio" name="colorFondoQuitar" id="radioBlanco" checked> Fondo blanco
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;">
+              <input type="radio" name="colorFondoQuitar" id="radioNegro"> Fondo negro
+            </label>
+          </div>
+
+          <div class="controles-conversor" style="margin-top:10px;">
+            <label for="sliderTolerancia">Tolerancia</label>
+            <input type="range" id="sliderTolerancia" min="5" max="120" value="35">
+            <span class="valor-calidad" id="valorTolerancia">35</span>
+          </div>
+
+          <div class="controles-conversor" style="margin-top:14px;">
+            <button class="btn-accion" id="btnDescargarFondo" disabled>Descargar</button>
+          </div>
+          <p class="tarjeta-texto" id="estadoFondo" style="font-size:0.85rem;color:#b98f7e;"></p>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           PANEL: Degradados
+           ============================================================ -->
+      <div class="tarjeta-juego oculto" id="panel-degradados">
+        <h3 class="tarjeta-titulo">Degradados en los Bordes</h3>
+        <p class="tarjeta-texto">
+          Subí una o varias imágenes — se aplican los mismos ajustes a todas. Elegí qué lados llevan degradado, el
+          tamaño, y si va hacia un color sólido o "vacío" (se va borrando hasta quedar transparente, como un fundido).
+        </p>
+
+        <div class="controles-conversor">
+          <label style="display:flex;align-items:center;gap:6px;"><input type="checkbox" id="ladoArriba">Arriba</label>
+          <label style="display:flex;align-items:center;gap:6px;"><input type="checkbox" id="ladoAbajo">Abajo</label>
+          <label style="display:flex;align-items:center;gap:6px;"><input type="checkbox" id="ladoIzquierda">Izquierda</label>
+          <label style="display:flex;align-items:center;gap:6px;"><input type="checkbox" id="ladoDerecha">Derecha</label>
+          <label style="display:flex;align-items:center;gap:6px;"><input type="checkbox" id="ladoTodos">Todos</label>
+        </div>
+
+        <div class="controles-conversor">
+          <label style="display:flex;align-items:center;gap:6px;"><input type="radio" name="modoDegradado" id="modoColorDegradado" checked>Color</label>
+          <label style="display:flex;align-items:center;gap:6px;"><input type="radio" name="modoDegradado" id="modoVacioDegradado">Vacío (transparencia)</label>
+        </div>
+
+        <div class="controles-conversor" id="controlesColorDegradado">
+          <input type="color" id="colorDegradado" value="#c81d25">
+          <input type="text" id="hexDegradado" class="input-color-texto" value="#C81D25" maxlength="7" spellcheck="false" aria-label="Color en hexadecimal">
+          <div class="rgb-inputs">
+            <span class="rgb-etiqueta">R</span><input type="number" id="rDegradado" min="0" max="255" value="200">
+            <span class="rgb-etiqueta">G</span><input type="number" id="gDegradado" min="0" max="255" value="29">
+            <span class="rgb-etiqueta">B</span><input type="number" id="bDegradado" min="0" max="255" value="37">
+          </div>
+        </div>
+
+        <div class="controles-conversor">
+          <label for="sliderTamanoDegradado">Tamaño</label>
+          <input type="range" id="sliderTamanoDegradado" min="5" max="60" value="25">
+          <span class="valor-calidad" id="valorTamanoDegradado">25%</span>
+        </div>
+
+        <div class="dropzone" id="dropDegradado">
+          <p><strong>Hacé clic para elegir imágenes</strong> o arrastralas acá.</p>
+          <input type="file" id="inputDegradado" accept="image/png,image/jpeg,image/webp" multiple>
+        </div>
+
+        <div class="controles-conversor">
+          <button class="btn-accion" id="btnReaplicarDegradado" disabled>Aplicar con estos ajustes</button>
+          <button class="btn-accion" id="btnDescargarTodoDegradado" disabled>Descargar todos</button>
+          <button class="btn-accion" id="btnLimpiarDegradado" disabled>Limpiar</button>
+        </div>
+        <p class="tarjeta-texto" id="estadoDegradado" style="font-size:0.85rem;color:#b98f7e;"></p>
+        <div class="resultados" id="resultadosDegradado"></div>
+      </div>
+
+      <!-- ============================================================
+           PANEL: Reemplazar Color
+           ============================================================ -->
+      <div class="tarjeta-juego oculto" id="panel-reemplazarcolor">
+        <h3 class="tarjeta-titulo">Reemplazar Color</h3>
+        <p class="tarjeta-texto">
+          Subí una imagen y tocá sobre el color que querés reemplazar (o escribilo en hex). Ajustá la tolerancia para
+          agarrar más o menos variación de ese tono, elegí el color nuevo, o marcá "dejar transparente" si en vez de
+          pintar querés sacar ese color directamente (por ejemplo, para quitar el fondo). Siempre descarga en PNG.
+        </p>
+
+        <div class="dropzone" id="dropReemplazar">
+          <p><strong>Hacé clic para elegir la imagen</strong> o arrastrala acá.</p>
+          <input type="file" id="inputReemplazar" accept="image/png,image/jpeg,image/webp">
+        </div>
+
+        <div id="zonaReemplazar" class="oculto" style="margin-top:6px;">
+          <p class="tarjeta-texto" style="font-size:0.82rem;">Tocá la imagen para elegir el color a reemplazar:</p>
+          <canvas id="canvasReemplazar" style="max-width:100%;border-radius:12px;border:2px solid var(--rojo-fuego);cursor:crosshair;background:
+            repeating-conic-gradient(#2a2020 0% 25%, #1a1414 0% 50%) 50% / 20px 20px;"></canvas>
+
+          <div class="controles-conversor" style="margin-top:14px;">
+            <label>Color a reemplazar</label>
+            <input type="color" id="colorObjetivoReemplazar" value="#ffffff">
+            <input type="text" id="hexObjetivoReemplazar" class="input-color-texto" value="#FFFFFF" maxlength="7" spellcheck="false">
+          </div>
+
+          <div class="controles-conversor">
+            <label for="sliderToleranciaReemplazar">Tolerancia</label>
+            <input type="range" id="sliderToleranciaReemplazar" min="5" max="200" value="40">
+            <span class="valor-calidad" id="valorToleranciaReemplazar">40</span>
+          </div>
+
+          <div class="controles-conversor">
+            <label style="display:flex;align-items:center;gap:6px;">
+              <input type="checkbox" id="checkTransparenteReemplazar">
+              Dejar transparente en vez de pintar
+            </label>
+          </div>
+
+          <div class="controles-conversor" id="controlesNuevoColorReemplazar">
+            <label>Color nuevo</label>
+            <input type="color" id="colorNuevoReemplazar" value="#c81d25">
+            <input type="text" id="hexNuevoReemplazar" class="input-color-texto" value="#C81D25" maxlength="7" spellcheck="false">
+          </div>
+
+          <div class="controles-conversor" style="margin-top:10px;">
+            <button class="btn-accion" id="btnDescargarReemplazar" disabled>Descargar PNG</button>
+          </div>
+          <p class="tarjeta-texto" id="estadoReemplazar" style="font-size:0.85rem;color:#b98f7e;"></p>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           PANEL: Estilo Artístico
+           ============================================================ -->
+      <div class="tarjeta-juego oculto" id="panel-estiloartistico">
+        <h3 class="tarjeta-titulo">Estilo Artístico</h3>
+        <p class="tarjeta-texto">
+          Subí una o varias imágenes. Son filtros calculados (bordes, tramado, tonos) — no una IA re-dibujando la
+          imagen; para eso haría falta un servicio de generación pago, como hablamos antes. Estos son gratis y corren
+          al toque en el navegador.
+        </p>
+
+        <div class="controles-conversor">
+          <label for="selectEstilo">Estilo</label>
+          <select id="selectEstilo" style="background:var(--negro);color:var(--hueso);border:2px solid var(--rojo-fuego);border-radius:10px;padding:7px 10px;font-family:var(--fuente-texto);">
+            <option value="boceto">Boceto a lápiz</option>
+            <option value="pergamino">Pergamino antiguo (sepia)</option>
+            <option value="grabado">Grabado con rayas (crosshatch)</option>
+          </select>
+          <label for="sliderIntensidadEstilo">Intensidad</label>
+          <input type="range" id="sliderIntensidadEstilo" min="1" max="10" value="5">
+          <span class="valor-calidad" id="valorIntensidadEstilo">5</span>
+        </div>
+
+        <div class="dropzone" id="dropEstilo">
+          <p><strong>Hacé clic para elegir imágenes</strong> o arrastralas acá.</p>
+          <input type="file" id="inputEstilo" accept="image/png,image/jpeg,image/webp" multiple>
+        </div>
+
+        <div class="controles-conversor">
+          <button class="btn-accion" id="btnReaplicarEstilo" disabled>Aplicar con estos ajustes</button>
+          <button class="btn-accion" id="btnDescargarTodoEstilo" disabled>Descargar todos</button>
+          <button class="btn-accion" id="btnLimpiarEstilo" disabled>Limpiar</button>
+        </div>
+        <p class="tarjeta-texto" id="estadoEstilo" style="font-size:0.85rem;color:#b98f7e;"></p>
+        <div class="resultados" id="resultadosEstilo"></div>
+      </div>
+
+      <!-- ============================================================
+           PANEL: Galería de Enlaces
+           ============================================================ -->
+      <div class="tarjeta-juego oculto" id="panel-galeria">
+        <h3 class="tarjeta-titulo">Galería de Enlaces</h3>
+        <p class="tarjeta-texto">
+          Se arma sola a partir de un archivo <code>reaper-links.json</code> que subís junto a este HTML en tu repo de
+          GitHub. Cada vez que edites ese archivo y actualices la web, los botones se actualizan solos — no hace
+          falta tocar este HTML. Formato del archivo (una lista de objetos):
+        </p>
+        <pre style="white-space:pre-wrap;background:var(--negro);border:1px solid var(--rojo-oscuro);border-radius:10px;padding:12px;font-size:0.78rem;color:#ead9c9;margin:0;">[
+  { "nombre": "Twitter", "vector": "https://tu-link-al-icono.svg", "web": "https://twitter.com/tu_usuario" },
+  { "nombre": "Discord", "vector": "https://tu-link-al-icono.png", "web": "https://discord.gg/tu-server" }
+]</pre>
+        <p class="tarjeta-texto" style="font-size:0.8rem;">
+          "vector" es el link a la imagen del ícono (svg, png, lo que sea), "web" es a dónde te lleva el botón, y
+          "nombre" es la palabrita que aparece abajo por si te olvidás qué es. Ojo: esto solo funciona subido a
+          GitHub Pages (o cualquier servidor) — abriendo el HTML como archivo local en tu compu el navegador no te
+          va a dejar leer el .json por seguridad.
+        </p>
+
+        <div class="controles-conversor">
+          <button class="btn-accion" id="btnRecargarGaleria">Recargar</button>
+        </div>
+        <p class="tarjeta-texto" id="estadoGaleria" style="font-size:0.85rem;color:#b98f7e;"></p>
+
+        <div class="grid-galeria" id="grid-galeria"></div>
       </div>
 
     </section>
@@ -742,6 +1011,7 @@ input[type=range] { accent-color: var(--rojo-brasa); width: 160px; }
     <p>Reaper Tools — pasala god, todo corre local.</p>
   </footer>
 
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
 <script>
 /* =========================================================
    REAPER TOOLS — script
@@ -757,7 +1027,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function abrirHerramienta(id) {
-  const paneles = ["webp", "oc", "canon", "gifmp4"];
+  const paneles = ["webp", "webppng", "gifmp4", "marcadeagua", "editarcolores", "python", "quitarfondo", "degradados", "reemplazarcolor", "estiloartistico", "galeria"];
   const yaAbierto = !document.getElementById("panel-" + id).classList.contains("oculto");
 
   paneles.forEach((p) => {
@@ -902,6 +1172,94 @@ function limpiarResultados() {
   btnDescargarTodo.disabled = true;
   btnLimpiarTodo.disabled = true;
   fileInput.value = "";
+}
+
+/* =========================================================
+   CONVERSOR WEBP -> PNG
+   ========================================================= */
+const dropWebpPng = document.getElementById("dropWebpPng");
+const inputWebpPng = document.getElementById("inputWebpPng");
+const resultadosWebpPng = document.getElementById("resultadosWebpPng");
+const btnDescargarTodoWebpPng = document.getElementById("descargarTodoWebpPng");
+const btnLimpiarTodoWebpPng = document.getElementById("limpiarTodoWebpPng");
+
+let convertidosWebpPng = [];
+
+dropWebpPng.addEventListener("click", () => inputWebpPng.click());
+inputWebpPng.addEventListener("change", (e) => manejarArchivosWebpPng(e.target.files));
+["dragover", "dragenter"].forEach((evt) => {
+  dropWebpPng.addEventListener(evt, (e) => { e.preventDefault(); dropWebpPng.classList.add("arrastrando"); });
+});
+["dragleave", "drop"].forEach((evt) => {
+  dropWebpPng.addEventListener(evt, (e) => { e.preventDefault(); dropWebpPng.classList.remove("arrastrando"); });
+});
+dropWebpPng.addEventListener("drop", (e) => manejarArchivosWebpPng(e.dataTransfer.files));
+
+btnDescargarTodoWebpPng.addEventListener("click", () => {
+  convertidosWebpPng.forEach((f, i) => {
+    setTimeout(() => {
+      const a = document.createElement("a");
+      a.href = f.url;
+      a.download = f.name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }, i * 200);
+  });
+});
+
+btnLimpiarTodoWebpPng.addEventListener("click", () => {
+  convertidosWebpPng.forEach((f) => URL.revokeObjectURL(f.url));
+  convertidosWebpPng = [];
+  resultadosWebpPng.innerHTML = "";
+  btnDescargarTodoWebpPng.disabled = true;
+  btnLimpiarTodoWebpPng.disabled = true;
+  inputWebpPng.value = "";
+});
+
+function manejarArchivosWebpPng(lista) {
+  Array.from(lista)
+    .filter((f) => /image\/webp/.test(f.type))
+    .forEach(convertirArchivoWebpPng);
+}
+
+function convertirArchivoWebpPng(file) {
+  const img = new Image();
+  const reader = new FileReader();
+  reader.onload = (e) => { img.src = e.target.result; };
+  img.onload = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    canvas.toBlob((blob) => {
+      if (!blob) { agregarFilaWebpPng(file.name, null, file.size, 0, true); return; }
+      const url = URL.createObjectURL(blob);
+      const nombreSalida = file.name.replace(/\.webp$/i, "") + ".png";
+      convertidosWebpPng.push({ name: nombreSalida, url, size: blob.size });
+      agregarFilaWebpPng(nombreSalida, url, file.size, blob.size, false);
+      btnDescargarTodoWebpPng.disabled = false;
+      btnLimpiarTodoWebpPng.disabled = false;
+    }, "image/png");
+  };
+  reader.readAsDataURL(file);
+}
+
+function agregarFilaWebpPng(nombre, url, tamanoOriginal, tamanoNuevo, fallo) {
+  const fila = document.createElement("div");
+  fila.className = "resultado-fila";
+  if (fallo) {
+    fila.innerHTML = `<span class="resultado-nombre">${nombre}</span><span class="resultado-tamano">no se pudo convertir</span>`;
+    resultadosWebpPng.appendChild(fila);
+    return;
+  }
+  fila.innerHTML = `
+    <span class="resultado-nombre">${nombre}</span>
+    <span class="resultado-tamano">${formatoTamano(tamanoOriginal)} → ${formatoTamano(tamanoNuevo)}</span>
+    <a href="${url}" download="${nombre}">Descargar</a>
+  `;
+  resultadosWebpPng.appendChild(fila);
 }
 
 /* =========================================================
@@ -1338,1015 +1696,823 @@ async function generarVideoGif() {
 }
 
 /* =========================================================
-   TARJETA DE OC
-   Canvas con efectos + encoder GIF89a propio (sin librerías)
-
-   TODO ESTE BLOQUE (hasta el cierre del archivo) es la parte
-   que se tocó para este pedido. El resto de las herramientas
-   (webp, gif→mp4) no se modificó.
+   QUITAR MARCA DE AGUA
+   Relleno tipo "difusión" (ecuación de Laplace, la misma idea
+   de siempre para inpainting liviano): rellena el rectángulo
+   marcado interpolando desde los bordes y después suavizando
+   con varias pasadas. No es reconstrucción con IA, así que
+   en fondos con mucho detalle puede notarse el parche.
    ========================================================= */
+const dropMarca = document.getElementById("dropMarca");
+const inputMarca = document.getElementById("inputMarca");
+const zonaMarca = document.getElementById("zonaMarca");
+const canvasMarca = document.getElementById("canvasMarca");
+const ctxMarca = canvasMarca.getContext("2d");
+const pasadasMarca = document.getElementById("pasadasMarca");
+const valorPasadasMarca = document.getElementById("valorPasadasMarca");
+const btnQuitarMarca = document.getElementById("btnQuitarMarca");
+const btnDeshacerMarca = document.getElementById("btnDeshacerMarca");
+const estadoMarca = document.getElementById("estadoMarca");
+const resultadoMarca = document.getElementById("resultadoMarca");
 
-/* ---------- fuentes disponibles (curadas, estilo fantasy/gótico) ---------- */
-const FUENTES_OC = [
-  { nombre: "Bangers (clásica)", familia: "Bangers" },
-  { nombre: "Cinzel Decorative (épica)", familia: "Cinzel Decorative" },
-  { nombre: "MedievalSharp (medieval)", familia: "MedievalSharp" },
-  { nombre: "Pirata One (gótica)", familia: "Pirata One" },
-  { nombre: "Metal Mania (metal)", familia: "Metal Mania" },
-  { nombre: "Creepster (terror)", familia: "Creepster" },
-  { nombre: "Butcherman (terror 2)", familia: "Butcherman" },
-  { nombre: "Nosifer (vampiro)", familia: "Nosifer" },
-  { nombre: "Uncial Antiqua (mágica)", familia: "Uncial Antiqua" },
-  { nombre: "Eagle Lake (caligráfica)", familia: "Eagle Lake" },
-  { nombre: "IM Fell English SC (antigua)", familia: "IM Fell English SC" },
-];
+let imagenOriginalMarca = null;
+let seleccionMarca = null;
+let arrastrandoMarca = false;
+let historialMarca = [];
+
+dropMarca.addEventListener("click", () => inputMarca.click());
+inputMarca.addEventListener("change", (e) => cargarImagenMarca(e.target.files[0]));
+["dragover", "dragenter"].forEach((evt) => {
+  dropMarca.addEventListener(evt, (e) => { e.preventDefault(); dropMarca.classList.add("arrastrando"); });
+});
+["dragleave", "drop"].forEach((evt) => {
+  dropMarca.addEventListener(evt, (e) => { e.preventDefault(); dropMarca.classList.remove("arrastrando"); });
+});
+dropMarca.addEventListener("drop", (e) => {
+  if (e.dataTransfer.files[0]) cargarImagenMarca(e.dataTransfer.files[0]);
+});
+
+function cargarImagenMarca(file) {
+  if (!file) return;
+  const img = new Image();
+  const reader = new FileReader();
+  reader.onload = (e) => { img.src = e.target.result; };
+  img.onload = () => {
+    canvasMarca.width = img.naturalWidth;
+    canvasMarca.height = img.naturalHeight;
+    ctxMarca.drawImage(img, 0, 0);
+    imagenOriginalMarca = ctxMarca.getImageData(0, 0, canvasMarca.width, canvasMarca.height);
+    zonaMarca.classList.remove("oculto");
+    seleccionMarca = null;
+    historialMarca = [];
+    btnQuitarMarca.disabled = true;
+    btnDeshacerMarca.disabled = true;
+    estadoMarca.textContent = "";
+    resultadoMarca.innerHTML = "";
+  };
+  reader.readAsDataURL(file);
+}
+
+function coordCanvasMarca(evento) {
+  const rect = canvasMarca.getBoundingClientRect();
+  const escalaX = canvasMarca.width / rect.width;
+  const escalaY = canvasMarca.height / rect.height;
+  const clientX = evento.touches ? evento.touches[0].clientX : evento.clientX;
+  const clientY = evento.touches ? evento.touches[0].clientY : evento.clientY;
+  return {
+    x: Math.round((clientX - rect.left) * escalaX),
+    y: Math.round((clientY - rect.top) * escalaY),
+  };
+}
+
+canvasMarca.addEventListener("mousedown", iniciarSeleccionMarca);
+canvasMarca.addEventListener("touchstart", iniciarSeleccionMarca);
+canvasMarca.addEventListener("mousemove", moverSeleccionMarca);
+canvasMarca.addEventListener("touchmove", moverSeleccionMarca);
+window.addEventListener("mouseup", terminarSeleccionMarca);
+window.addEventListener("touchend", terminarSeleccionMarca);
+
+function iniciarSeleccionMarca(e) {
+  if (!imagenOriginalMarca) return;
+  e.preventDefault();
+  arrastrandoMarca = true;
+  const p = coordCanvasMarca(e);
+  seleccionMarca = { x0: p.x, y0: p.y, x1: p.x, y1: p.y };
+}
+
+function moverSeleccionMarca(e) {
+  if (!arrastrandoMarca || !imagenOriginalMarca) return;
+  e.preventDefault();
+  const p = coordCanvasMarca(e);
+  seleccionMarca.x1 = p.x;
+  seleccionMarca.y1 = p.y;
+  redibujarMarca();
+}
+
+function terminarSeleccionMarca() {
+  if (!arrastrandoMarca) return;
+  arrastrandoMarca = false;
+  if (seleccionMarca && Math.abs(seleccionMarca.x1 - seleccionMarca.x0) > 3 && Math.abs(seleccionMarca.y1 - seleccionMarca.y0) > 3) {
+    btnQuitarMarca.disabled = false;
+  }
+}
+
+function redibujarMarca() {
+  ctxMarca.putImageData(imagenOriginalMarca, 0, 0);
+  if (seleccionMarca) {
+    const { x0, y0, x1, y1 } = seleccionMarca;
+    ctxMarca.save();
+    ctxMarca.strokeStyle = "#ffef2b";
+    ctxMarca.lineWidth = Math.max(1, canvasMarca.width / 300);
+    ctxMarca.setLineDash([8, 6]);
+    ctxMarca.strokeRect(Math.min(x0, x1), Math.min(y0, y1), Math.abs(x1 - x0), Math.abs(y1 - y0));
+    ctxMarca.restore();
+  }
+}
+
+pasadasMarca.addEventListener("input", () => { valorPasadasMarca.textContent = pasadasMarca.value; });
+
+function muestraBorde(data, width, height, x, y) {
+  x = Math.max(0, Math.min(width - 1, x));
+  y = Math.max(0, Math.min(height - 1, y));
+  const idx = (y * width + x) * 4;
+  return [data[idx], data[idx + 1], data[idx + 2]];
+}
+
+function inpaintRegion(imageData, x0, y0, w, h, iteraciones, alturaCanvas) {
+  const width = imageData.width;
+  const data = imageData.data;
+  const x1 = x0 + w, y1 = y0 + h;
+
+  // paso 1: relleno inicial interpolando desde los cuatro bordes
+  for (let y = y0; y < y1; y++) {
+    for (let x = x0; x < x1; x++) {
+      const tArriba = muestraBorde(data, width, alturaCanvas, x, y0 - 1);
+      const tAbajo = muestraBorde(data, width, alturaCanvas, x, y1);
+      const tIzq = muestraBorde(data, width, alturaCanvas, x0 - 1, y);
+      const tDer = muestraBorde(data, width, alturaCanvas, x1, y);
+      const fy = (y - y0 + 1) / (h + 1);
+      const fx = (x - x0 + 1) / (w + 1);
+      const idx = (y * width + x) * 4;
+      for (let c = 0; c < 3; c++) {
+        const vertical = tArriba[c] * (1 - fy) + tAbajo[c] * fy;
+        const horizontal = tIzq[c] * (1 - fx) + tDer[c] * fx;
+        data[idx + c] = (vertical + horizontal) / 2;
+      }
+      data[idx + 3] = 255;
+    }
+  }
+
+  // paso 2: suavizado por difusión (promedio con los vecinos), varias pasadas
+  for (let it = 0; it < iteraciones; it++) {
+    for (let y = y0; y < y1; y++) {
+      for (let x = x0; x < x1; x++) {
+        const idx = (y * width + x) * 4;
+        for (let c = 0; c < 3; c++) {
+          const arriba = data[((y - 1) * width + x) * 4 + c];
+          const abajo = data[((y + 1) * width + x) * 4 + c];
+          const izq = data[(y * width + x - 1) * 4 + c];
+          const der = data[(y * width + x + 1) * 4 + c];
+          data[idx + c] = (arriba + abajo + izq + der) / 4;
+        }
+      }
+    }
+  }
+}
+
+btnQuitarMarca.addEventListener("click", () => {
+  if (!seleccionMarca || !imagenOriginalMarca) return;
+  const x0 = Math.max(1, Math.min(seleccionMarca.x0, seleccionMarca.x1));
+  const y0 = Math.max(1, Math.min(seleccionMarca.y0, seleccionMarca.y1));
+  const x1 = Math.min(canvasMarca.width - 1, Math.max(seleccionMarca.x0, seleccionMarca.x1));
+  const y1 = Math.min(canvasMarca.height - 1, Math.max(seleccionMarca.y0, seleccionMarca.y1));
+  const w = x1 - x0, h = y1 - y0;
+  if (w < 2 || h < 2) return;
+
+  estadoMarca.textContent = "Rellenando...";
+  btnQuitarMarca.disabled = true;
+
+  setTimeout(() => {
+    const trabajo = new ImageData(new Uint8ClampedArray(imagenOriginalMarca.data), canvasMarca.width, canvasMarca.height);
+    inpaintRegion(trabajo, x0, y0, w, h, parseInt(pasadasMarca.value, 10), canvasMarca.height);
+    historialMarca.push(imagenOriginalMarca);
+    imagenOriginalMarca = trabajo;
+    seleccionMarca = null;
+    redibujarMarca();
+    btnDeshacerMarca.disabled = false;
+    estadoMarca.textContent = "Listo. Si quedó algo del logo, marcá de nuevo esa zona y aplicá otra vez.";
+    mostrarDescargaMarca();
+  }, 30);
+});
+
+btnDeshacerMarca.addEventListener("click", () => {
+  if (!historialMarca.length) return;
+  imagenOriginalMarca = historialMarca.pop();
+  redibujarMarca();
+  if (!historialMarca.length) btnDeshacerMarca.disabled = true;
+  mostrarDescargaMarca();
+});
+
+function mostrarDescargaMarca() {
+  resultadoMarca.innerHTML = "";
+  canvasMarca.toBlob((blob) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "reaper-sin-marca.png";
+    a.textContent = "Descargar imagen";
+    a.className = "btn-accion";
+    a.style.display = "inline-block";
+    a.style.textDecoration = "none";
+    resultadoMarca.appendChild(a);
+  }, "image/png");
+}
 
 /* =========================================================
-   COLOR: sistema de "solo tono" (matiz)
-   GAMA_S y GAMA_L quedan FIJOS. Elijas el color por hexa o
-   arrastrando la barra de tonos, el resultado siempre tiene
-   el mismo brillo y la misma saturación — lo único que
-   cambia es el matiz (0-360). Esto es justamente lo que pediste:
-   que cambiar el "color principal" no cambie brillo/saturación.
+   EDITAR COLORES
+   Reusa el decodificador de GIF de la herramienta anterior
+   para mantener el movimiento; ajusta tono/saturación/luz/
+   sombra/contraste píxel a píxel y respeta la transparencia.
    ========================================================= */
-const GAMA_S = 72;
-const GAMA_L = 48;
+const dropColores = document.getElementById("dropColores");
+const inputColores = document.getElementById("inputColores");
+const zonaColores = document.getElementById("zonaColores");
+const canvasColores = document.getElementById("canvasColores");
+const ctxColores = canvasColores.getContext("2d");
+const checkMonocromo = document.getElementById("checkMonocromo");
+const colorMonocromo = document.getElementById("colorMonocromo");
+const sliderTono = document.getElementById("sliderTono");
+const sliderSat = document.getElementById("sliderSat");
+const sliderLuz = document.getElementById("sliderLuz");
+const sliderSombra = document.getElementById("sliderSombra");
+const sliderContraste = document.getElementById("sliderContraste");
+const valTono = document.getElementById("valTono");
+const valSat = document.getElementById("valSat");
+const valLuz = document.getElementById("valLuz");
+const valSombra = document.getElementById("valSombra");
+const valContraste = document.getElementById("valContraste");
+const btnResetColores = document.getElementById("btnResetColores");
+const btnDescargarColores = document.getElementById("btnDescargarColores");
+const estadoColores = document.getElementById("estadoColores");
 
-function hexAHsl(hex) {
-  const c = hexARgb(hex);
-  if (!c) return null;
-  let { r, g, b } = c;
+let originalesColores = [];
+let procesados = [];
+let esAnimadoColores = false;
+let idxPreviewColores = 0;
+let timerPreviewColores = null;
+let recalculoPendiente = false;
+
+dropColores.addEventListener("click", () => inputColores.click());
+inputColores.addEventListener("change", (e) => cargarImagenColores(e.target.files[0]));
+["dragover", "dragenter"].forEach((evt) => {
+  dropColores.addEventListener(evt, (e) => { e.preventDefault(); dropColores.classList.add("arrastrando"); });
+});
+["dragleave", "drop"].forEach((evt) => {
+  dropColores.addEventListener(evt, (e) => { e.preventDefault(); dropColores.classList.remove("arrastrando"); });
+});
+dropColores.addEventListener("drop", (e) => {
+  if (e.dataTransfer.files[0]) cargarImagenColores(e.dataTransfer.files[0]);
+});
+
+async function cargarImagenColores(file) {
+  if (!file) return;
+  clearTimeout(timerPreviewColores);
+  estadoColores.textContent = "Cargando...";
+
+  if (file.type === "image/gif") {
+    try {
+      const buffer = await file.arrayBuffer();
+      const gif = leerGIF(buffer);
+      const cuadros = componerCuadros(gif);
+      canvasColores.width = gif.width;
+      canvasColores.height = gif.height;
+      originalesColores = cuadros.map((c) => ({ imageData: c.imageData, delay: c.delay }));
+      esAnimadoColores = cuadros.length > 1;
+    } catch (err) {
+      estadoColores.textContent = "No pude leer ese GIF.";
+      return;
+    }
+    terminarCargaColores();
+  } else {
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = (e) => { img.src = e.target.result; };
+    img.onload = () => {
+      canvasColores.width = img.naturalWidth;
+      canvasColores.height = img.naturalHeight;
+      ctxColores.clearRect(0, 0, canvasColores.width, canvasColores.height);
+      ctxColores.drawImage(img, 0, 0);
+      const data = ctxColores.getImageData(0, 0, canvasColores.width, canvasColores.height);
+      originalesColores = [{ imageData: data, delay: 1e9 }];
+      esAnimadoColores = false;
+      terminarCargaColores();
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function terminarCargaColores() {
+  zonaColores.classList.remove("oculto");
+  btnDescargarColores.disabled = false;
+  estadoColores.textContent = "";
+  resetearControlesColores(false);
+  recalcularColores();
+  idxPreviewColores = 0;
+  loopPreviewColores();
+}
+
+/* ---------- conversión RGB <-> HSL ---------- */
+function rgbAHsl(r, g, b) {
   r /= 255; g /= 255; b /= 255;
   const max = Math.max(r, g, b), min = Math.min(r, g, b);
-  let h = 0, s, l = (max + min) / 2;
+  let h, s, l = (max + min) / 2;
   if (max === min) {
-    s = 0;
+    h = s = 0;
   } else {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
     switch (max) {
       case r: h = (g - b) / d + (g < b ? 6 : 0); break;
       case g: h = (b - r) / d + 2; break;
-      case b: h = (r - g) / d + 4; break;
+      default: h = (r - g) / d + 4; break;
     }
     h *= 60;
   }
   return { h, s: s * 100, l: l * 100 };
 }
 
-function hslAHex(h, s, l) {
+function hslARgb(h, s, l) {
   h = ((h % 360) + 360) % 360;
-  s /= 100; l /= 100;
-  const k = (n) => (n + h / 30) % 12;
-  const a = s * Math.min(l, 1 - l);
-  const f = (n) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
-  return rgbAHex(Math.round(f(0) * 255), Math.round(f(8) * 255), Math.round(f(4) * 255));
+  s = Math.max(0, Math.min(100, s)) / 100;
+  l = Math.max(0, Math.min(100, l)) / 100;
+  if (s === 0) {
+    const v = Math.round(l * 255);
+    return { r: v, g: v, b: v };
+  }
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  const hk = h / 360;
+  const tc = (t) => {
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 1 / 2) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+    return p;
+  };
+  return {
+    r: Math.round(tc(hk + 1 / 3) * 255),
+    g: Math.round(tc(hk) * 255),
+    b: Math.round(tc(hk - 1 / 3) * 255),
+  };
 }
 
-function colorDesdeHue(hue) {
-  return hslAHex(hue, GAMA_S, GAMA_L);
+/* ---------- ajuste de píxeles: tono/saturación/luz/sombra/contraste ---------- */
+function transformarPixeles(origData, opts) {
+  const data = new Uint8ClampedArray(origData.data);
+  const { monocromo, colorMono, tono, sat, luz, sombra, contraste } = opts;
+
+  let monoH = 0, monoS = 0;
+  if (monocromo) {
+    const rgbMono = hexARgb(colorMono) || { r: 200, g: 29, b: 37 };
+    const hsl = rgbAHsl(rgbMono.r, rgbMono.g, rgbMono.b);
+    monoH = hsl.h; monoS = hsl.s;
+  }
+
+  const cEscalado = contraste * 2.55;
+  const factorContraste = (259 * (cEscalado + 255)) / (255 * (259 - cEscalado));
+
+  for (let i = 0; i < data.length; i += 4) {
+    if (data[i + 3] === 0) continue; // no tocar píxeles totalmente transparentes
+
+    let r = data[i], g = data[i + 1], b = data[i + 2];
+
+    if (monocromo) {
+      const l = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 * 100;
+      const rgb = hslARgb(monoH, monoS, l);
+      r = rgb.r; g = rgb.g; b = rgb.b;
+    } else if (tono !== 0 || sat !== 0) {
+      const hsl = rgbAHsl(r, g, b);
+      const h = (hsl.h + tono + 360) % 360;
+      const s = Math.max(0, Math.min(100, hsl.s + sat));
+      const rgb = hslARgb(h, s, hsl.l);
+      r = rgb.r; g = rgb.g; b = rgb.b;
+    }
+
+    if (luz !== 0) {
+      const delta = luz * 2.55;
+      r += delta; g += delta; b += delta;
+    }
+
+    if (sombra !== 0) {
+      const lum = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+      const peso = Math.max(0, 1 - lum * 1.6);
+      const delta = sombra * 2 * peso;
+      r += delta; g += delta; b += delta;
+    }
+
+    r = factorContraste * (r - 128) + 128;
+    g = factorContraste * (g - 128) + 128;
+    b = factorContraste * (b - 128) + 128;
+
+    data[i] = r; data[i + 1] = g; data[i + 2] = b;
+  }
+
+  return new ImageData(data, origData.width, origData.height);
+}
+
+function leerOpcionesColores() {
+  return {
+    monocromo: checkMonocromo.checked,
+    colorMono: colorMonocromo.value,
+    tono: parseInt(sliderTono.value, 10),
+    sat: parseInt(sliderSat.value, 10),
+    luz: parseInt(sliderLuz.value, 10),
+    sombra: parseInt(sliderSombra.value, 10),
+    contraste: parseInt(sliderContraste.value, 10),
+  };
+}
+
+function recalcularColores() {
+  const opts = leerOpcionesColores();
+  procesados = originalesColores.map((f) => ({
+    imageData: transformarPixeles(f.imageData, opts),
+    delay: f.delay,
+  }));
+}
+
+function pedirRecalculo() {
+  if (recalculoPendiente) return;
+  recalculoPendiente = true;
+  requestAnimationFrame(() => {
+    recalcularColores();
+    if (!esAnimadoColores) {
+      // en imágenes estáticas el loop de preview no vuelve a pintar solo,
+      // así que redibujamos acá mismo apenas se recalculan los colores
+      dibujarCuadroColores(0);
+    }
+    recalculoPendiente = false;
+  });
+}
+
+function dibujarCuadroColores(i) {
+  ctxColores.putImageData(procesados[i].imageData, 0, 0);
+}
+
+function loopPreviewColores() {
+  if (!procesados.length) return;
+  dibujarCuadroColores(idxPreviewColores);
+  const delay = esAnimadoColores ? procesados[idxPreviewColores].delay : 1e9;
+  idxPreviewColores = (idxPreviewColores + 1) % procesados.length;
+  clearTimeout(timerPreviewColores);
+  timerPreviewColores = setTimeout(loopPreviewColores, delay);
+}
+
+[sliderTono, sliderSat, sliderLuz, sliderSombra, sliderContraste].forEach((s) => {
+  s.addEventListener("input", () => {
+    valTono.textContent = sliderTono.value;
+    valSat.textContent = sliderSat.value;
+    valLuz.textContent = sliderLuz.value;
+    valSombra.textContent = sliderSombra.value;
+    valContraste.textContent = sliderContraste.value;
+    pedirRecalculo();
+  });
+});
+
+checkMonocromo.addEventListener("change", () => {
+  sliderTono.disabled = checkMonocromo.checked;
+  sliderSat.disabled = checkMonocromo.checked;
+  pedirRecalculo();
+});
+colorMonocromo.addEventListener("input", pedirRecalculo);
+
+function resetearControlesColores(recalcular) {
+  sliderTono.value = 0; sliderSat.value = 0; sliderLuz.value = 0; sliderSombra.value = 0; sliderContraste.value = 0;
+  valTono.textContent = "0"; valSat.textContent = "0"; valLuz.textContent = "0"; valSombra.textContent = "0"; valContraste.textContent = "0";
+  checkMonocromo.checked = false;
+  sliderTono.disabled = false; sliderSat.disabled = false;
+  if (recalcular) pedirRecalculo();
+}
+
+btnResetColores.addEventListener("click", () => resetearControlesColores(true));
+
+btnDescargarColores.addEventListener("click", async () => {
+  if (esAnimadoColores) {
+    await exportarAnimacionColores();
+  } else {
+    canvasColores.toBlob((blob) => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = "reaper-color.png"; a.click();
+    }, "image/png");
+  }
+});
+
+async function exportarAnimacionColores() {
+  estadoColores.textContent = "Grabando animación...";
+  btnDescargarColores.disabled = true;
+  clearTimeout(timerPreviewColores);
+
+  const stream = canvasColores.captureStream(0);
+  const track = stream.getVideoTracks()[0];
+  const candidatos = ["video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm"];
+  const mimeType = candidatos.find((c) => MediaRecorder.isTypeSupported(c));
+  if (!mimeType) {
+    estadoColores.textContent = "Tu navegador no puede grabar video acá. Probá con Chrome de escritorio.";
+    btnDescargarColores.disabled = false;
+    loopPreviewColores();
+    return;
+  }
+
+  const chunks = [];
+  const rec = new MediaRecorder(stream, { mimeType });
+  rec.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
+  const listo = new Promise((res) => { rec.onstop = res; });
+
+  rec.start();
+  for (let i = 0; i < procesados.length; i++) {
+    dibujarCuadroColores(i);
+    track.requestFrame();
+    await esperar(procesados[i].delay);
+  }
+  rec.stop();
+  await listo;
+
+  const blob = new Blob(chunks, { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "reaper-color.webm"; a.click();
+
+  estadoColores.textContent = "Listo. Se exportó como WEBM (la animación no se puede volver a guardar como GIF acá).";
+  btnDescargarColores.disabled = false;
+  loopPreviewColores();
 }
 
 /* =========================================================
-   UNIVERSOS: se cargan desde universos.json (idealmente en tu
-   GitHub, con el link "raw"), así no tenés que volver a escribir
-   fuentes/marcos/gifs cada vez que armás una tarjeta.
-
-   ⚠️ EDITÁ ESTA URL cuando subas tu universos.json:
-   https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/universos.json
-
-   Si el fetch falla (sin internet, 404, CORS, todavía no lo
-   subiste) se usa el array UNIVERSOS_OC_RESPALDO de más abajo,
-   así la página nunca se rompe.
-
-   Formato de cada universo dentro del JSON (ver universos.json
-   de ejemplo que te paso junto con este HTML):
-   {
-     "id": "hp",
-     "nombre": "Harry Potter",
-     "colorHue": 42,                 // 0-360, el tono que se asigna solo
-     "logo": "https://raw.githubusercontent.com/.../hp.png",
-     "marcoPersonaje": "https://raw.githubusercontent.com/.../hp-marco.png",
-     "marcoGeneral": "https://raw.githubusercontent.com/.../hp-marco-general.png",
-     "marcoGeneralSoloMascara": true, // true = no se dibuja, solo se usa su forma como máscara de la foto secundaria
-     "gifIzquierda": "https://raw.githubusercontent.com/.../hp-gif-izq.gif",
-     "gifDerecha": "https://raw.githubusercontent.com/.../hp-gif-der.gif",
-     "fuentes": [ { "nombre": "Wiki oficial", "url": "https://..." } ]
-   }
-
-   Los links de "logo", "marcoPersonaje", "marcoGeneral" y los gifs
-   tienen que tener CORS habilitado para poder exportar el GIF final
-   (raw.githubusercontent.com ya lo permite). Si no, la vista previa
-   funciona igual, pero el botón "Generar GIF" va a fallar con un
-   aviso. Los marcos los diseñás vos (ya con luces/sombras propias):
-   acá solo se les rota el tono, nunca el brillo ni la saturación.
+   EJECUTAR PYTHON
+   Usa Pyodide (Python -> WebAssembly) para correr el script
+   en el navegador. Instala dependencias con loadPackage/micropip
+   cuando puede; si no puede, avisa y sigue igual.
    ========================================================= */
-const URL_UNIVERSOS_JSON = "https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/universos.json";
+const dropPy = document.getElementById("dropPy");
+const inputPy = document.getElementById("inputPy");
+const editorPython = document.getElementById("editorPython");
+const dropArchivosPy = document.getElementById("dropArchivosPy");
+const inputArchivosPy = document.getElementById("inputArchivosPy");
+const listaArchivosPy = document.getElementById("listaArchivosPy");
+const btnEjecutarPython = document.getElementById("btnEjecutarPython");
+const btnLimpiarPython = document.getElementById("btnLimpiarPython");
+const estadoPython = document.getElementById("estadoPython");
+const salidaPython = document.getElementById("salidaPython");
+const resultadoPython = document.getElementById("resultadoPython");
 
-const UNIVERSOS_OC_RESPALDO = [
-  {
-    id: "snk", nombre: "Shingeki no Kyojin", colorHue: 5,
-    logo: "https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/logos/snk.png",
-    marcoPersonaje: "", marcoGeneral: "", marcoGeneralSoloMascara: true,
-    gifIzquierda: "", gifDerecha: "", fuentes: [],
-  },
-  {
-    id: "bnha", nombre: "Boku no Hero Academia", colorHue: 210,
-    logo: "https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/logos/bnha.png",
-    marcoPersonaje: "", marcoGeneral: "", marcoGeneralSoloMascara: true,
-    gifIzquierda: "", gifDerecha: "", fuentes: [],
-  },
-  {
-    id: "hp", nombre: "Harry Potter", colorHue: 42,
-    logo: "https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/logos/harry-potter.png",
-    marcoPersonaje: "", marcoGeneral: "", marcoGeneralSoloMascara: true,
-    gifIzquierda: "", gifDerecha: "", fuentes: [],
-  },
-  {
-    id: "ninguno", nombre: "Sin universo", colorHue: 352,
-    logo: "", marcoPersonaje: "", marcoGeneral: "", marcoGeneralSoloMascara: true,
-    gifIzquierda: "", gifDerecha: "", fuentes: [],
-  },
-];
+let archivosEntradaPython = [];
+let pyodideInstancia = null;
+let pyodideCargando = null;
 
-let UNIVERSOS_OC = UNIVERSOS_OC_RESPALDO;
+dropPy.addEventListener("click", () => inputPy.click());
+inputPy.addEventListener("change", (e) => cargarScriptPy(e.target.files[0]));
+["dragover", "dragenter"].forEach((evt) => {
+  dropPy.addEventListener(evt, (e) => { e.preventDefault(); dropPy.classList.add("arrastrando"); });
+});
+["dragleave", "drop"].forEach((evt) => {
+  dropPy.addEventListener(evt, (e) => { e.preventDefault(); dropPy.classList.remove("arrastrando"); });
+});
+dropPy.addEventListener("drop", (e) => { if (e.dataTransfer.files[0]) cargarScriptPy(e.dataTransfer.files[0]); });
 
-/* ---------- helpers de color para efectos de texto (glow/gradiente) ----------
-   Estos SÍ mezclan hacia blanco/negro (a diferencia del sistema de tono de
-   arriba) porque son nada más para dar contraste/legibilidad al texto, no
-   para recolorear marcos ni gifs. */
-function mezclarColor(hex, objetivo, cantidad) {
-  const c = hexARgb(hex);
-  if (!c) return hex;
-  const r = Math.round(c.r + (objetivo[0] - c.r) * cantidad);
-  const g = Math.round(c.g + (objetivo[1] - c.g) * cantidad);
-  const b = Math.round(c.b + (objetivo[2] - c.b) * cantidad);
-  return rgbAHex(r, g, b);
-}
-function aclararColor(hex, cantidad) { return mezclarColor(hex, [255, 255, 255], cantidad); }
-function oscurecerColor(hex, cantidad) { return mezclarColor(hex, [0, 0, 0], cantidad); }
-function mezclarAlpha(hex, alpha) {
-  const c = hexARgb(hex) || { r: 255, g: 255, b: 255 };
-  return `rgba(${c.r},${c.g},${c.b},${alpha})`;
+function cargarScriptPy(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => { editorPython.value = e.target.result; };
+  reader.readAsText(file);
 }
 
-/* ---------- helpers de dibujo ---------- */
-function trazarRectRedondeado(ctx, x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.arcTo(x + w, y, x + w, y + h, r);
-  ctx.arcTo(x + w, y + h, x, y + h, r);
-  ctx.arcTo(x, y + h, x, y, r);
-  ctx.arcTo(x, y, x + w, y, r);
-  ctx.closePath();
+dropArchivosPy.addEventListener("click", () => inputArchivosPy.click());
+inputArchivosPy.addEventListener("change", (e) => agregarArchivosEntradaPy(e.target.files));
+["dragover", "dragenter"].forEach((evt) => {
+  dropArchivosPy.addEventListener(evt, (e) => { e.preventDefault(); dropArchivosPy.classList.add("arrastrando"); });
+});
+["dragleave", "drop"].forEach((evt) => {
+  dropArchivosPy.addEventListener(evt, (e) => { e.preventDefault(); dropArchivosPy.classList.remove("arrastrando"); });
+});
+dropArchivosPy.addEventListener("drop", (e) => agregarArchivosEntradaPy(e.dataTransfer.files));
+
+function agregarArchivosEntradaPy(lista) {
+  archivosEntradaPython = archivosEntradaPython.concat(Array.from(lista));
+  listaArchivosPy.textContent = archivosEntradaPython.length
+    ? "Archivos: " + archivosEntradaPython.map((f) => f.name).join(", ")
+    : "";
 }
 
-function dibujarImagenCover(ctx, img, x, y, w, h) {
-  const ratio = Math.max(w / img.width, h / img.height);
-  const nw = img.width * ratio, nh = img.height * ratio;
-  const nx = x + (w - nw) / 2, ny = y + (h - nh) / 2;
-  ctx.drawImage(img, nx, ny, nw, nh);
-}
+const MODULOS_ESTANDAR_PY = new Set([
+  "os", "sys", "re", "json", "math", "random", "time", "datetime", "itertools", "functools",
+  "collections", "pathlib", "subprocess", "threading", "typing", "io", "shutil", "glob", "csv",
+  "logging", "argparse", "socket", "struct", "copy", "enum", "dataclasses", "abc", "traceback",
+  "unittest", "base64", "hashlib", "uuid", "tempfile", "zipfile", "gzip", "pickle", "string",
+  "textwrap", "warnings", "array", "bisect", "heapq", "statistics", "decimal", "fractions",
+  "operator", "queue", "asyncio", "__future__",
+]);
 
-function envolverTexto(ctx, texto, maxWidth) {
-  const palabras = texto.split(/\s+/);
-  const lineas = [];
-  let actual = "";
-  for (const palabra of palabras) {
-    const prueba = actual ? actual + " " + palabra : palabra;
-    if (ctx.measureText(prueba).width > maxWidth && actual) {
-      lineas.push(actual);
-      actual = palabra;
-    } else {
-      actual = prueba;
-    }
-  }
-  if (actual) lineas.push(actual);
-  return lineas;
-}
-
-function aplicarEfectoTexto(ctx, texto, x, y, tamInicial, fontFamily, gama, claro, efecto, t, maxWidth) {
-  ctx.save();
-  let tam = tamInicial;
-  ctx.font = `${tam}px "${fontFamily}", "Bangers", cursive`;
-  while (ctx.measureText(texto).width > maxWidth && tam > 10) {
-    tam -= 1;
-    ctx.font = `${tam}px "${fontFamily}", "Bangers", cursive`;
-  }
-  const pulso = 0.5 + 0.5 * Math.sin(t * Math.PI * 2);
-  ctx.shadowColor = "transparent";
-  ctx.shadowBlur = 0;
-  if (efecto === "luces" || efecto === "ambos") {
-    ctx.shadowColor = gama;
-    ctx.shadowBlur = 14 + 10 * pulso;
-  }
-  if (efecto === "degradado" || efecto === "ambos") {
-    const ancho = ctx.measureText(texto).width || 1;
-    const grad = ctx.createLinearGradient(x, y, x + ancho, y);
-    grad.addColorStop(0, claro);
-    grad.addColorStop(0.5, "#ffffff");
-    grad.addColorStop(1, claro);
-    ctx.fillStyle = grad;
-  } else {
-    ctx.fillStyle = "#fff3e6";
-  }
-  ctx.fillText(texto, x, y);
-  ctx.restore();
-  return tam;
-}
-
-/* ---------- NUEVO: alto dinámico de la tarjeta -----------
-   Depende del tamaño de fuente elegido para la mini descripción:
-   a más tamaño, más líneas envueltas, más alta la tarjeta (y la
-   foto, que ocupa todo el alto, crece con ella). Dos pasadas
-   porque el ancho disponible para el texto depende un poquito
-   del alto (la foto es cuadrada = alto de la tarjeta). */
-function calcularAltoTarjeta(ctx, datos) {
-  const W = 720;
-  const pad = 18, pad2 = 70;
-  let H = 212;
-  const tamDesc = datos.tamDesc || 12.5;
-  for (let iter = 0; iter < 2; iter++) {
-    const fotoTam = H - pad * 2;
-    const cx0 = pad + fotoTam + 22;
-    const contentW = Math.max(60, W - cx0 - pad2);
-    let alturaColumna = 4;
-    if (datos.logoUniverso) alturaColumna += 34 + 10;
-    alturaColumna += 30 * 1.25; // nombre
-    alturaColumna += 15 * 1.5;  // fc
-    ctx.save();
-    ctx.font = `${tamDesc}px "Rubik", sans-serif`;
-    const lineas = envolverTexto(ctx, '"' + (datos.descripcion || "") + '"', contentW);
-    ctx.restore();
-    alturaColumna += Math.max(1, lineas.length) * (tamDesc * 1.35);
-    alturaColumna += 10;
-    H = Math.max(212, Math.round(alturaColumna + pad * 2));
-  }
-  return H;
-}
-
-/* ---------- NUEVO: foto secundaria (FC), de fondo, semitransparente -----------
-   No hace falta que sea cuadrada: se recorta "cover" a toda la tarjeta.
-   Se desatura y se mezcla en "multiply" con el color principal (mapa de
-   2 tonos), tal como pediste — así no compite con el texto y sigue el
-   tono elegido sin tocarle la saturación al resto de la tarjeta. Si el
-   universo tiene un "marcoGeneral", se usa su forma (su transparencia)
-   como máscara para que la foto no se salga de esa silueta; si no,
-   se recorta al borde redondeado de la tarjeta. */
-function dibujarFotoSecundaria(ctx, W, H, datos, gama) {
-  if (!datos.imagenSecundaria) return;
-  const off = document.createElement("canvas");
-  off.width = W; off.height = H;
-  const octx = off.getContext("2d");
-
-  octx.filter = "grayscale(1) brightness(0.85) contrast(1.05)";
-  dibujarImagenCover(octx, datos.imagenSecundaria, 0, 0, W, H);
-  octx.filter = "none";
-
-  octx.globalCompositeOperation = "multiply";
-  octx.fillStyle = gama;
-  octx.fillRect(0, 0, W, H);
-  octx.globalCompositeOperation = "source-over";
-
-  if (datos.marcoGeneral) {
-    octx.globalCompositeOperation = "destination-in";
-    try { dibujarImagenCover(octx, datos.marcoGeneral, 0, 0, W, H); } catch (e) {}
-    octx.globalCompositeOperation = "source-over";
-  }
-
-  ctx.save();
-  ctx.globalAlpha = 0.4;
-  if (!datos.marcoGeneral) {
-    trazarRectRedondeado(ctx, 2, 2, W - 4, H - 4, 26);
-    ctx.clip();
-  }
-  ctx.drawImage(off, 0, 0);
-  ctx.restore();
-}
-
-/* ---------- NUEVO: marco general del universo -----------
-   Si "marcoGeneralSoloMascara" es true (default), este marco NO se
-   dibuja: solo sirve como máscara de la foto secundaria (arriba).
-   Si es false, se dibuja como un marco extra por encima de toda la
-   tarjeta, con el tono rotado (sin tocar sus luces/sombras propias). */
-function dibujarMarcoGeneral(ctx, W, H, datos) {
-  if (!datos.marcoGeneral || datos.marcoGeneralSoloMascara) return;
-  ctx.save();
-  ctx.filter = `hue-rotate(${datos.hue - TONO_BASE_ARTE}deg)`;
-  try { dibujarImagenCover(ctx, datos.marcoGeneral, 0, 0, W, H); } catch (e) {}
-  ctx.filter = "none";
-  ctx.restore();
-}
-
-/* ---------- dibujo de la tarjeta completa (vista previa Y exportación) ---------- */
-function dibujarTarjetaOC(ctx, W, H, t, datos) {
-  const s = W / 720;
-  ctx.clearRect(0, 0, W, H);
-  ctx.save();
-
-  const gama = datos.color || "#c81d25";
-  const claro = aclararColor(gama, 0.55);
-  const oscuro = oscurecerColor(gama, 0.55);
-  const pulso = 0.5 + 0.5 * Math.sin(t * Math.PI * 2);
-  const radio = 26 * s;
-
-  trazarRectRedondeado(ctx, 2 * s, 2 * s, W - 4 * s, H - 4 * s, radio);
-  ctx.clip();
-
-  const fondoGrad = ctx.createLinearGradient(0, 0, W, H);
-  fondoGrad.addColorStop(0, "rgba(13,13,13,0.94)");
-  fondoGrad.addColorStop(1, "rgba(22,15,15,0.94)");
-  ctx.fillStyle = fondoGrad;
-  ctx.fillRect(0, 0, W, H);
-
-  /* NUEVO: fondo con la segunda foto (duotono) */
-  dibujarFotoSecundaria(ctx, W, H, datos, gama);
-
-  const brilloX = -W * 0.4 + t * W * 1.8;
-  const brilloGrad = ctx.createLinearGradient(brilloX, 0, brilloX + W * 0.35, H);
-  brilloGrad.addColorStop(0, "rgba(255,255,255,0)");
-  brilloGrad.addColorStop(0.5, mezclarAlpha(claro, 0.14));
-  brilloGrad.addColorStop(1, "rgba(255,255,255,0)");
-  ctx.fillStyle = brilloGrad;
-  ctx.fillRect(0, 0, W, H);
-
-  /* ---- foto principal a la izquierda + marco del personaje ---- */
-  const pad = 18 * s;
-  const fotoTam = H - pad * 2;
-  const fotoX = pad, fotoY = pad;
-
-  trazarRectRedondeado(ctx, fotoX, fotoY, fotoTam, fotoTam, 16 * s);
-  ctx.save();
-  ctx.clip();
-  ctx.fillStyle = "#150f0f";
-  ctx.fillRect(fotoX, fotoY, fotoTam, fotoTam);
-  if (datos.imagen) {
-    /* NUEVO: ajuste fino de X / Y / escala dentro del marco */
-    const escala = datos.fotoEscala || 1;
-    const anchoFoto = fotoTam * escala, altoFoto = fotoTam * escala;
-    const offX = (datos.fotoX || 0) * s, offY = (datos.fotoY || 0) * s;
-    dibujarImagenCover(
-      ctx, datos.imagen,
-      fotoX - (anchoFoto - fotoTam) / 2 + offX,
-      fotoY - (altoFoto - fotoTam) / 2 + offY,
-      anchoFoto, altoFoto
-    );
-  }
-  ctx.restore();
-
-  if (datos.marcoPersonaje) {
-    /* NUEVO: marco propio (vos lo diseñás, con sus luces/sombras).
-       Se dibuja EN UNA CAPA POR ENCIMA de la foto, y solo se le
-       rota el tono — nunca el brillo ni la saturación. */
-    ctx.save();
-    ctx.filter = `hue-rotate(${datos.hue - TONO_BASE_ARTE}deg)`;
-    try { dibujarImagenCover(ctx, datos.marcoPersonaje, fotoX, fotoY, fotoTam, fotoTam); } catch (e) {}
-    ctx.filter = "none";
-    ctx.restore();
-  } else {
-    /* sin marco propio todavía: borde simple de siempre, como respaldo */
-    ctx.save();
-    ctx.lineWidth = 3 * s;
-    ctx.strokeStyle = claro;
-    ctx.shadowColor = gama;
-    ctx.shadowBlur = (10 + 8 * pulso) * s;
-    trazarRectRedondeado(ctx, fotoX, fotoY, fotoTam, fotoTam, 16 * s);
-    ctx.stroke();
-    ctx.restore();
-  }
-
-  /* ---- columna de contenido ---- */
-  const cx = fotoX + fotoTam + 22 * s;
-  const pad2 = 70 * s;
-  const contentW = Math.max(40 * s, W - cx - pad2);
-  let cy = fotoY + 4 * s;
-
-  if (datos.logoUniverso) {
-    const logoAlto = 34 * s;
-    const ratio = datos.logoUniverso.width / datos.logoUniverso.height || 1;
-    const logoAncho = Math.min(logoAlto * ratio, contentW * 0.55);
-    ctx.save();
-    ctx.shadowColor = "rgba(0,0,0,0.6)";
-    ctx.shadowBlur = 6 * s;
-    try { ctx.drawImage(datos.logoUniverso, cx, cy, logoAncho, logoAlto); } catch (e) {}
-    ctx.restore();
-    cy += logoAlto + 10 * s;
-  }
-
-  const fontFamily = datos.fuente || "Bangers";
-  const textoNombre = "OC: " + (datos.nombre || "Sin nombre");
-  ctx.textBaseline = "top";
-  const tamUsado = aplicarEfectoTexto(ctx, textoNombre, cx, cy, 30 * s, fontFamily, gama, claro, datos.efectoTexto, t, contentW);
-  cy += tamUsado * 1.25;
-
-  ctx.font = `${15 * s}px "Rubik", sans-serif`;
-  ctx.fillStyle = "#ead9c9";
-  ctx.shadowColor = "transparent";
-  ctx.shadowBlur = 0;
-  ctx.fillText("FC: " + (datos.fc || "—"), cx, cy);
-  cy += 15 * s * 1.5;
-
-  /* NUEVO: tamaño de fuente elegible, y ya no se cortan las líneas —
-     la tarjeta creció lo necesario para que entren todas (ver
-     calcularAltoTarjeta). */
-  const tamDesc = (datos.tamDesc || 12.5) * s;
-  ctx.font = `${tamDesc}px "Rubik", sans-serif`;
-  ctx.fillStyle = "rgba(234,217,201,0.85)";
-  const lineas = envolverTexto(ctx, '"' + (datos.descripcion || "") + '"', contentW);
-  lineas.forEach((linea, i) => ctx.fillText(linea, cx, cy + i * tamDesc * 1.35));
-
-  /* ---- circulito con el número, abajo a la derecha ---- */
-  const rCirc = 30 * s;
-  const ccx = W - pad - rCirc, ccy = H - pad - rCirc;
-  ctx.save();
-  ctx.shadowColor = gama;
-  ctx.shadowBlur = (12 + 10 * pulso) * s;
-  const gradCirc = ctx.createRadialGradient(ccx, ccy, rCirc * 0.15, ccx, ccy, rCirc);
-  gradCirc.addColorStop(0, claro);
-  gradCirc.addColorStop(1, oscuro);
-  ctx.beginPath();
-  ctx.arc(ccx, ccy, rCirc, 0, Math.PI * 2);
-  ctx.fillStyle = gradCirc;
-  ctx.fill();
-  ctx.lineWidth = 2.5 * s;
-  ctx.strokeStyle = "#0d0d0d";
-  ctx.stroke();
-  ctx.shadowColor = "transparent";
-  ctx.shadowBlur = 0;
-  ctx.fillStyle = "#fff3e6";
-  ctx.font = `800 ${22 * s}px "Rubik", sans-serif`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(datos.numero !== "" && datos.numero != null ? String(datos.numero) : "?", ccx, ccy + 1 * s);
-  ctx.textAlign = "left";
-  ctx.textBaseline = "alphabetic";
-  ctx.restore();
-
-  /* ---- borde exterior con glow pulsante ---- */
-  ctx.lineWidth = 2.5 * s;
-  ctx.strokeStyle = claro;
-  ctx.shadowColor = gama;
-  ctx.shadowBlur = (8 + 8 * pulso) * s;
-  trazarRectRedondeado(ctx, 2 * s, 2 * s, W - 4 * s, H - 4 * s, radio);
-  ctx.stroke();
-
-  /* NUEVO: marco general del universo, si corresponde dibujarlo */
-  dibujarMarcoGeneral(ctx, W, H, datos);
-
-  ctx.restore();
-}
-
-/* ---------- UI: referencias y estado ---------- */
-const dropFotoOC = document.getElementById("dropFotoOC");
-const inputFotoOC = document.getElementById("inputFotoOC");
-const nombreFotoOC = document.getElementById("nombreFotoOC");
-const dropFotoSecundariaOC = document.getElementById("dropFotoSecundariaOC");
-const inputFotoSecundariaOC = document.getElementById("inputFotoSecundariaOC");
-const nombreFotoSecundariaOC = document.getElementById("nombreFotoSecundariaOC");
-const colorOC = document.getElementById("colorOC");
-const hexColorOC = document.getElementById("hexColorOC");
-const sliderTonoOC = document.getElementById("sliderTonoOC");
-const inputNombreOC = document.getElementById("inputNombreOC");
-const selectFuenteOC = document.getElementById("selectFuenteOC");
-const inputFuenteUrlOC = document.getElementById("inputFuenteUrlOC");
-const inputFuenteNombreOC = document.getElementById("inputFuenteNombreOC");
-const btnCargarFuenteOC = document.getElementById("btnCargarFuenteOC");
-const estadoFuenteOC = document.getElementById("estadoFuenteOC");
-const selectEfectoTextoOC = document.getElementById("selectEfectoTextoOC");
-const inputFcOC = document.getElementById("inputFcOC");
-const selectUniversoOC = document.getElementById("selectUniversoOC");
-const fuentesUniversoOC = document.getElementById("fuentesUniversoOC");
-const inputNumeroOC = document.getElementById("inputNumeroOC");
-const textareaDescOC = document.getElementById("textareaDescOC");
-const rangoTamDescOC = document.getElementById("rangoTamDescOC");
-const inputFotoXOC = document.getElementById("inputFotoXOC");
-const inputFotoYOC = document.getElementById("inputFotoYOC");
-const inputFotoEscalaOC = document.getElementById("inputFotoEscalaOC");
-const canvasPreviewOC = document.getElementById("canvasPreviewOC");
-const ctxPreviewOC = canvasPreviewOC.getContext("2d");
-const gifFlotanteIzqOC = document.getElementById("gifFlotanteIzqOC");
-const gifFlotanteDerOC = document.getElementById("gifFlotanteDerOC");
-const btnGenerarOC = document.getElementById("btnGenerarOC");
-const estadoOC = document.getElementById("estadoOC");
-const resultadoOC = document.getElementById("resultadoOC");
-
-gifFlotanteIzqOC.crossOrigin = "anonymous";
-gifFlotanteDerOC.crossOrigin = "anonymous";
-
-const datosOC = {
-  imagen: null,
-  imagenSecundaria: null,
-  logoUniverso: null,
-  marcoPersonaje: null,
-  marcoGeneral: null,
-  marcoGeneralSoloMascara: true,
-  hue: hexAHsl("#c81d25").h,
-  color: "#c81d25",
-  nombre: "",
-  fc: "",
-  descripcion: "",
-  numero: "",
-  fuente: "Bangers",
-  efectoTexto: "ambos",
-  tamDesc: 12.5,
-  fotoX: 0,
-  fotoY: 0,
-  fotoEscala: 1,
+const MAPEO_PAQUETES_PY = {
+  PIL: "Pillow",
+  cv2: "opencv-python",
+  bs4: "beautifulsoup4",
+  sklearn: "scikit-learn",
+  yaml: "pyyaml",
 };
 
-/* Tono de referencia en el que se asume dibujado el arte de marcos/gifs
-   (el rojo-fuego propio del sitio). Todo hue-rotate se calcula desde acá. */
-const TONO_BASE_ARTE = datosOC.hue;
-
-FUENTES_OC.forEach((f) => {
-  const opt = document.createElement("option");
-  opt.value = f.familia;
-  opt.textContent = f.nombre;
-  selectFuenteOC.appendChild(opt);
-});
-const optPersonalizadaOC = document.createElement("option");
-optPersonalizadaOC.value = "__personalizada__";
-optPersonalizadaOC.textContent = "Personalizada (URL de abajo)";
-selectFuenteOC.appendChild(optPersonalizadaOC);
-
-/* ---------- helpers de carga de universo ---------- */
-function cargarImagen(url) {
-  return new Promise((resolve) => {
-    if (!url) { resolve(null); return; }
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.onload = () => resolve(img);
-    img.onerror = () => resolve(null);
-    img.src = url;
-  });
+function detectarModulosPy(codigo) {
+  const set = new Set();
+  const re = /^\s*(?:import|from)\s+([a-zA-Z_][a-zA-Z0-9_]*)/gm;
+  let m;
+  while ((m = re.exec(codigo))) set.add(m[1]);
+  return Array.from(set);
 }
 
-function actualizarFiltroGifs() {
-  const filtro = `hue-rotate(${datosOC.hue - TONO_BASE_ARTE}deg)`;
-  gifFlotanteIzqOC.style.filter = filtro;
-  gifFlotanteDerOC.style.filter = filtro;
-}
-
-function aplicarHue(hue) {
-  datosOC.hue = ((hue % 360) + 360) % 360;
-  datosOC.color = colorDesdeHue(datosOC.hue);
-  colorOC.value = datosOC.color;
-  hexColorOC.value = datosOC.color;
-  sliderTonoOC.value = Math.round(datosOC.hue);
-  actualizarFiltroGifs();
-}
-
-async function cargarDatosUniverso(indice) {
-  const universo = UNIVERSOS_OC[indice] || UNIVERSOS_OC[0];
-  if (!universo) return;
-
-  datosOC.logoUniverso = await cargarImagen(universo.logo);
-  datosOC.marcoPersonaje = await cargarImagen(universo.marcoPersonaje);
-  datosOC.marcoGeneral = await cargarImagen(universo.marcoGeneral);
-  datosOC.marcoGeneralSoloMascara = universo.marcoGeneralSoloMascara !== false;
-
-  if (typeof universo.colorHue === "number") aplicarHue(universo.colorHue);
-
-  gifFlotanteIzqOC.classList.toggle("visible", !!universo.gifIzquierda);
-  if (universo.gifIzquierda) gifFlotanteIzqOC.src = universo.gifIzquierda;
-  gifFlotanteDerOC.classList.toggle("visible", !!universo.gifDerecha);
-  if (universo.gifDerecha) gifFlotanteDerOC.src = universo.gifDerecha;
-  actualizarFiltroGifs();
-
-  fuentesUniversoOC.innerHTML = "";
-  if (Array.isArray(universo.fuentes) && universo.fuentes.length) {
-    universo.fuentes.forEach((f) => {
-      const a = document.createElement("a");
-      a.href = f.url;
-      a.textContent = f.nombre || f.url;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      fuentesUniversoOC.appendChild(a);
-    });
-  } else {
-    const span = document.createElement("span");
-    span.className = "sin-fuentes";
-    span.textContent = "Este universo no tiene fuentes cargadas en el JSON todavía.";
-    fuentesUniversoOC.appendChild(span);
+async function obtenerPyodideInstancia() {
+  if (pyodideInstancia) return pyodideInstancia;
+  if (!pyodideCargando) {
+    estadoPython.textContent = "Descargando Python (Pyodide)... puede tardar la primera vez.";
+    pyodideCargando = loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/" });
   }
+  pyodideInstancia = await pyodideCargando;
+  return pyodideInstancia;
 }
 
-/* ---------- carga de universos.json (con respaldo local si falla) ---------- */
-async function cargarListaUniversos() {
+btnLimpiarPython.addEventListener("click", () => {
+  editorPython.value = "";
+  archivosEntradaPython = [];
+  listaArchivosPy.textContent = "";
+  salidaPython.textContent = "";
+  resultadoPython.innerHTML = "";
+  estadoPython.textContent = "";
+  inputPy.value = "";
+  inputArchivosPy.value = "";
+});
+
+btnEjecutarPython.addEventListener("click", ejecutarPython);
+
+async function ejecutarPython() {
+  const codigo = editorPython.value;
+  if (!codigo.trim()) { estadoPython.textContent = "Pegá o subí un script primero."; return; }
+
+  btnEjecutarPython.disabled = true;
+  salidaPython.textContent = "";
+  resultadoPython.innerHTML = "";
+  estadoPython.textContent = "Preparando Python...";
+
   try {
-    const resp = await fetch(URL_UNIVERSOS_JSON, { cache: "no-store" });
-    if (!resp.ok) throw new Error("HTTP " + resp.status);
-    const data = await resp.json();
-    if (Array.isArray(data.universos) && data.universos.length) {
-      UNIVERSOS_OC = data.universos;
+    const pyodide = await obtenerPyodideInstancia();
+
+    for (const f of archivosEntradaPython) {
+      const buffer = new Uint8Array(await f.arrayBuffer());
+      pyodide.FS.writeFile(f.name, buffer);
     }
+
+    await pyodide.loadPackage("micropip").catch(() => {});
+    let micropip = null;
+    try { micropip = pyodide.pyimport("micropip"); } catch (e) { /* seguimos sin micropip */ }
+
+    const modulos = detectarModulosPy(codigo);
+    for (const mod of modulos) {
+      if (MODULOS_ESTANDAR_PY.has(mod)) continue;
+      const nombrePaquete = MAPEO_PAQUETES_PY[mod] || mod;
+      estadoPython.textContent = `Instalando ${nombrePaquete}...`;
+      let instalado = false;
+      try { await pyodide.loadPackage(nombrePaquete); instalado = true; } catch (e) { /* no es un paquete precompilado */ }
+      if (!instalado && micropip) {
+        try { await micropip.install(nombrePaquete); instalado = true; } catch (e) { /* no está en PyPI como rueda pura-python */ }
+      }
+      if (!instalado) {
+        salidaPython.textContent += `[aviso] no pude instalar "${nombrePaquete}" (puede que no tenga versión para Pyodide) — sigo igual.\n`;
+      }
+    }
+
+    estadoPython.textContent = "Ejecutando...";
+    const listaAntes = new Set(pyodide.FS.readdir("."));
+
+    pyodide.setStdout({ batched: (s) => { salidaPython.textContent += s + "\n"; salidaPython.scrollTop = salidaPython.scrollHeight; } });
+    pyodide.setStderr({ batched: (s) => { salidaPython.textContent += s + "\n"; salidaPython.scrollTop = salidaPython.scrollHeight; } });
+
+    await pyodide.runPythonAsync(codigo);
+
+    const listaDespues = pyodide.FS.readdir(".");
+    const nuevos = listaDespues.filter((n) => !listaAntes.has(n) && n !== "." && n !== "..");
+    mostrarArchivosGeneradosPy(nuevos, pyodide);
+
+    estadoPython.textContent = "Listo.";
   } catch (err) {
-    console.warn("[Tarjeta de OC] No se pudo cargar universos.json, uso el array de respaldo local. Detalle:", err);
+    salidaPython.textContent += "\n[error] " + (err && err.message ? err.message : String(err));
+    estadoPython.textContent = "Terminó con errores.";
+  } finally {
+    btnEjecutarPython.disabled = false;
   }
-  selectUniversoOC.innerHTML = "";
-  UNIVERSOS_OC.forEach((u, i) => {
-    const opt = document.createElement("option");
-    opt.value = i;
-    opt.textContent = u.nombre;
-    selectUniversoOC.appendChild(opt);
+}
+
+function mostrarArchivosGeneradosPy(nombres, pyodide) {
+  nombres.forEach((nombre) => {
+    let datos;
+    try { datos = pyodide.FS.readFile(nombre); } catch (e) { return; } // puede ser un directorio
+    const blob = new Blob([datos]);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = nombre; a.textContent = "Descargar " + nombre;
+    a.className = "btn-accion";
+    a.style.display = "inline-block";
+    a.style.margin = "4px 6px 0 0";
+    a.style.textDecoration = "none";
+    resultadoPython.appendChild(a);
   });
-  if (UNIVERSOS_OC.length) cargarDatosUniverso(0);
 }
-cargarListaUniversos();
-
-dropFotoOC.addEventListener("click", () => inputFotoOC.click());
-inputFotoOC.addEventListener("change", () => {
-  const file = inputFotoOC.files[0];
-  if (!file) return;
-  nombreFotoOC.textContent = file.name;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const img = new Image();
-    img.onload = () => { datosOC.imagen = img; };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-});
-
-dropFotoSecundariaOC.addEventListener("click", () => inputFotoSecundariaOC.click());
-inputFotoSecundariaOC.addEventListener("change", () => {
-  const file = inputFotoSecundariaOC.files[0];
-  if (!file) return;
-  nombreFotoSecundariaOC.textContent = file.name;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const img = new Image();
-    img.onload = () => { datosOC.imagenSecundaria = img; };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-});
-
-colorOC.addEventListener("input", () => {
-  const hsl = hexAHsl(colorOC.value);
-  if (hsl) aplicarHue(hsl.h);
-});
-hexColorOC.addEventListener("input", () => {
-  const hsl = hexAHsl(hexColorOC.value);
-  if (!hsl) return;
-  aplicarHue(hsl.h);
-});
-hexColorOC.addEventListener("blur", () => { hexColorOC.value = datosOC.color; });
-sliderTonoOC.addEventListener("input", () => { aplicarHue(parseFloat(sliderTonoOC.value)); });
-
-inputNombreOC.addEventListener("input", () => { datosOC.nombre = inputNombreOC.value; });
-inputFcOC.addEventListener("input", () => { datosOC.fc = inputFcOC.value; });
-inputNumeroOC.addEventListener("input", () => { datosOC.numero = inputNumeroOC.value; });
-textareaDescOC.addEventListener("input", () => { datosOC.descripcion = textareaDescOC.value; });
-selectEfectoTextoOC.addEventListener("change", () => { datosOC.efectoTexto = selectEfectoTextoOC.value; });
-selectUniversoOC.addEventListener("change", () => { cargarDatosUniverso(parseInt(selectUniversoOC.value, 10)); });
-rangoTamDescOC.addEventListener("input", () => { datosOC.tamDesc = parseFloat(rangoTamDescOC.value); });
-inputFotoXOC.addEventListener("input", () => { datosOC.fotoX = parseFloat(inputFotoXOC.value) || 0; });
-inputFotoYOC.addEventListener("input", () => { datosOC.fotoY = parseFloat(inputFotoYOC.value) || 0; });
-inputFotoEscalaOC.addEventListener("input", () => { datosOC.fotoEscala = parseFloat(inputFotoEscalaOC.value) || 1; });
-
-selectFuenteOC.addEventListener("change", () => {
-  datosOC.fuente = selectFuenteOC.value === "__personalizada__"
-    ? (inputFuenteNombreOC.value || "Bangers")
-    : selectFuenteOC.value;
-});
-
-btnCargarFuenteOC.addEventListener("click", async () => {
-  reproducirClic();
-  const url = inputFuenteUrlOC.value.trim();
-  const familia = inputFuenteNombreOC.value.trim();
-  if (!url || !familia) {
-    estadoFuenteOC.textContent = "Completá el nombre de familia y la URL de la fuente.";
-    return;
-  }
-  try {
-    estadoFuenteOC.textContent = "Cargando fuente...";
-    const fuente = new FontFace(familia, `url("${url}")`);
-    await fuente.load();
-    document.fonts.add(fuente);
-    selectFuenteOC.value = "__personalizada__";
-    datosOC.fuente = familia;
-    estadoFuenteOC.textContent = "Fuente cargada: " + familia;
-  } catch (err) {
-    estadoFuenteOC.textContent = "No se pudo cargar esa fuente. Revisá que la URL apunte directo a un .woff2/.ttf.";
-  }
-});
-
-/* ---------- vista previa animada en vivo ---------- */
-function loopVistaPreviaOC(timestamp) {
-  const t = (timestamp / 2200) % 1;
-  const H = calcularAltoTarjeta(ctxPreviewOC, datosOC);
-  if (canvasPreviewOC.height !== H) canvasPreviewOC.height = H;
-  dibujarTarjetaOC(ctxPreviewOC, canvasPreviewOC.width, H, t, datosOC);
-  requestAnimationFrame(loopVistaPreviaOC);
-}
-requestAnimationFrame(loopVistaPreviaOC);
 
 /* =========================================================
-   ENCODER GIF89a PROPIO (paleta por median-cut + LZW)
+   QUITAR FONDO (BLANCO/NEGRO)
+   Chroma-key simple sobre fondos lisos: todo lo que esté
+   cerca del blanco o negro puro pasa a transparente, con un
+   borde suavizado para que no quede un recorte duro.
    ========================================================= */
+const dropFondo = document.getElementById("dropFondo");
+const inputFondo = document.getElementById("inputFondo");
+const zonaFondo = document.getElementById("zonaFondo");
+const canvasFondo = document.getElementById("canvasFondo");
+const ctxFondo = canvasFondo.getContext("2d");
+const radioBlanco = document.getElementById("radioBlanco");
+const radioNegro = document.getElementById("radioNegro");
+const sliderTolerancia = document.getElementById("sliderTolerancia");
+const valorTolerancia = document.getElementById("valorTolerancia");
+const btnDescargarFondo = document.getElementById("btnDescargarFondo");
+const estadoFondo = document.getElementById("estadoFondo");
 
-function muestrearPixeles(imageDatas, maxMuestras) {
-  let total = 0;
-  imageDatas.forEach((id) => (total += id.width * id.height));
-  const paso = Math.max(1, Math.floor(total / maxMuestras));
-  const muestras = [];
-  let contador = 0;
-  for (const id of imageDatas) {
-    const { data } = id;
-    for (let p = 0; p < data.length; p += 4) {
-      if (data[p + 3] >= 128 && contador % paso === 0) {
-        muestras.push([data[p], data[p + 1], data[p + 2]]);
-      }
-      contador++;
-    }
-  }
-  return muestras;
-}
+let originalFondo = null;
 
-function construirPaletaMedianCut(muestras, maxColores) {
-  if (!muestras.length) return [[255, 255, 255]];
-  let cubos = [muestras];
-  while (cubos.length < maxColores) {
-    let idx = -1, mejorRango = -1, canalElegido = 0;
-    cubos.forEach((cubo, i) => {
-      if (cubo.length < 2) return;
-      for (let c = 0; c < 3; c++) {
-        let min = 255, max = 0;
-        for (const p of cubo) { if (p[c] < min) min = p[c]; if (p[c] > max) max = p[c]; }
-        const rango = max - min;
-        if (rango > mejorRango) { mejorRango = rango; idx = i; canalElegido = c; }
-      }
-    });
-    if (idx === -1) break;
-    const cubo = cubos[idx];
-    cubo.sort((a, b) => a[canalElegido] - b[canalElegido]);
-    const mitad = Math.floor(cubo.length / 2);
-    cubos.splice(idx, 1, cubo.slice(0, mitad), cubo.slice(mitad));
-  }
-  return cubos.map((cubo) => {
-    let r = 0, g = 0, b = 0;
-    for (const p of cubo) { r += p[0]; g += p[1]; b += p[2]; }
-    const n = cubo.length || 1;
-    return [Math.round(r / n), Math.round(g / n), Math.round(b / n)];
-  });
-}
+dropFondo.addEventListener("click", () => inputFondo.click());
+inputFondo.addEventListener("change", (e) => cargarImagenFondo(e.target.files[0]));
+["dragover", "dragenter"].forEach((evt) => {
+  dropFondo.addEventListener(evt, (e) => { e.preventDefault(); dropFondo.classList.add("arrastrando"); });
+});
+["dragleave", "drop"].forEach((evt) => {
+  dropFondo.addEventListener(evt, (e) => { e.preventDefault(); dropFondo.classList.remove("arrastrando"); });
+});
+dropFondo.addEventListener("drop", (e) => { if (e.dataTransfer.files[0]) cargarImagenFondo(e.dataTransfer.files[0]); });
 
-function colorMasCercano(r, g, b, paleta) {
-  let mejorIdx = 0, mejorDist = Infinity;
-  for (let i = 0; i < paleta.length; i++) {
-    const c = paleta[i];
-    const dr = r - c[0], dg = g - c[1], db = b - c[2];
-    const dist = dr * dr + dg * dg + db * db;
-    if (dist < mejorDist) { mejorDist = dist; mejorIdx = i; }
-  }
-  return mejorIdx;
-}
-
-function paletaAIndices(imageData, paleta) {
-  const { data, width, height } = imageData;
-  const indices = new Uint8Array(width * height);
-  const cache = new Map();
-  for (let p = 0, i = 0; p < data.length; p += 4, i++) {
-    if (data[p + 3] < 128) { indices[i] = 255; continue; }
-    const r = data[p], g = data[p + 1], b = data[p + 2];
-    const key = (r << 16) | (g << 8) | b;
-    let idx = cache.get(key);
-    if (idx === undefined) {
-      idx = colorMasCercano(r, g, b, paleta);
-      cache.set(key, idx);
-    }
-    indices[i] = idx;
-  }
-  return indices;
-}
-
-/* ---------- LZW encoder (espejo del decoder que ya usa el conversor gif->mp4) ---------- */
-function codificarLZW(indices, minCodeSize) {
-  const clearCode = 1 << minCodeSize;
-  const eoiCode = clearCode + 1;
-  let dict, codeSize, siguienteCodigo;
-
-  function reiniciarDiccionario() {
-    dict = new Map();
-    for (let i = 0; i < clearCode; i++) dict.set(String.fromCharCode(i), i);
-    siguienteCodigo = eoiCode + 1;
-    codeSize = minCodeSize + 1;
-  }
-
-  const bytesSalida = [];
-  let bitBuffer = 0, bitCount = 0;
-  function emitirCodigo(code) {
-    bitBuffer |= code << bitCount;
-    bitCount += codeSize;
-    while (bitCount >= 8) {
-      bytesSalida.push(bitBuffer & 0xff);
-      bitBuffer >>= 8;
-      bitCount -= 8;
-    }
-  }
-
-  reiniciarDiccionario();
-  emitirCodigo(clearCode);
-
-  let w = String.fromCharCode(indices[0]);
-  for (let i = 1; i < indices.length; i++) {
-    const k = String.fromCharCode(indices[i]);
-    const wk = w + k;
-    if (dict.has(wk)) {
-      w = wk;
-    } else {
-      emitirCodigo(dict.get(w));
-      if (siguienteCodigo < 4096) {
-        dict.set(wk, siguienteCodigo++);
-        if (siguienteCodigo === (1 << codeSize) && codeSize < 12) codeSize++;
-      } else {
-        emitirCodigo(clearCode);
-        reiniciarDiccionario();
-      }
-      w = k;
-    }
-  }
-  emitirCodigo(dict.get(w));
-  emitirCodigo(eoiCode);
-  if (bitCount > 0) bytesSalida.push(bitBuffer & 0xff);
-
-  return bytesSalida;
-}
-
-function construirBytesGIF({ width, height, paleta, indiceTransparente, cuadros, delayCs }) {
-  const bytes = [];
-  const pushStr = (s) => { for (let i = 0; i < s.length; i++) bytes.push(s.charCodeAt(i)); };
-  const pushU16 = (v) => bytes.push(v & 0xff, (v >> 8) & 0xff);
-
-  pushStr("GIF89a");
-  pushU16(width);
-  pushU16(height);
-  bytes.push(0xf7); // tabla global de 256 colores, resolución de color 8 bits
-  bytes.push(0);    // color de fondo
-  bytes.push(0);    // relación de aspecto
-
-  for (let i = 0; i < 256; i++) {
-    const c = paleta[i] || [0, 0, 0];
-    bytes.push(c[0], c[1], c[2]);
-  }
-
-  // extensión NETSCAPE para loop infinito
-  bytes.push(0x21, 0xff, 0x0b);
-  pushStr("NETSCAPE2.0");
-  bytes.push(0x03, 0x01, 0x00, 0x00, 0x00);
-
-  for (const cuadro of cuadros) {
-    // Graphics Control Extension
-    bytes.push(0x21, 0xf9, 0x04);
-    bytes.push((1 << 2) | 1); // disposal=1 (no dispose), transparencia activada
-    pushU16(delayCs);
-    bytes.push(indiceTransparente);
-    bytes.push(0x00);
-
-    // Image Descriptor
-    bytes.push(0x2c);
-    pushU16(0); pushU16(0); pushU16(width); pushU16(height);
-    bytes.push(0x00); // sin tabla local, sin entrelazado
-
-    const minCodeSize = 8;
-    bytes.push(minCodeSize);
-    const comprimido = codificarLZW(cuadro, minCodeSize);
-    let i = 0;
-    while (i < comprimido.length) {
-      const tam = Math.min(255, comprimido.length - i);
-      bytes.push(tam);
-      for (let j = 0; j < tam; j++) bytes.push(comprimido[i + j]);
-      i += tam;
-    }
-    bytes.push(0x00);
-  }
-
-  bytes.push(0x3b);
-  return new Uint8Array(bytes);
-}
-
-/* ---------- NUEVO: dibuja los gifs flotantes (mejor esfuerzo) en el frame exportado -----------
-   Captura el cuadro que esté mostrando cada <img> de gif en ese instante
-   y lo dibuja rotado/flotando, encima de todo, pudiendo sobresalir de la
-   tarjeta. Como los GIFs animados no se pueden "congelar" cuadro a cuadro
-   desde JS sin decodificarlos a mano, esto es una aproximación: en la
-   práctica el navegador sí va actualizando el cuadro visible del <img> en
-   tiempo real durante la exportación, así que suele quedar animado igual. */
-function dibujarGifsFlotantes(ctx, W, H, t) {
-  const rotacion = datosOC.hue - TONO_BASE_ARTE;
-  const dibujarUno = (imgEl, esquina) => {
-    if (!imgEl.classList.contains("visible") || !imgEl.complete || !imgEl.naturalWidth) return;
-    const anchoMax = W * 0.15, altoMax = H * 0.34;
-    const ratio = Math.min(anchoMax / imgEl.naturalWidth, altoMax / imgEl.naturalHeight);
-    const w = imgEl.naturalWidth * ratio, h = imgEl.naturalHeight * ratio;
-    const bob = Math.sin(t * Math.PI * 2) * H * 0.03;
-    const giro = (esquina === "izq" ? -1 : 1) * Math.sin(t * Math.PI * 2) * (8 * Math.PI / 180);
-    const x = esquina === "izq" ? -W * 0.02 : W - w + W * 0.02;
-    const y = -H * 0.06 + bob;
-    ctx.save();
-    ctx.filter = `hue-rotate(${rotacion}deg)`;
-    ctx.translate(x + w / 2, y + h / 2);
-    ctx.rotate(giro);
-    try { ctx.drawImage(imgEl, -w / 2, -h / 2, w, h); } catch (e) {}
-    ctx.filter = "none";
-    ctx.restore();
+function cargarImagenFondo(file) {
+  if (!file) return;
+  const img = new Image();
+  const reader = new FileReader();
+  reader.onload = (e) => { img.src = e.target.result; };
+  img.onload = () => {
+    canvasFondo.width = img.naturalWidth;
+    canvasFondo.height = img.naturalHeight;
+    ctxFondo.clearRect(0, 0, canvasFondo.width, canvasFondo.height);
+    ctxFondo.drawImage(img, 0, 0);
+    originalFondo = ctxFondo.getImageData(0, 0, canvasFondo.width, canvasFondo.height);
+    zonaFondo.classList.remove("oculto");
+    btnDescargarFondo.disabled = false;
+    estadoFondo.textContent = "";
+    aplicarQuitarFondo();
   };
-  dibujarUno(gifFlotanteIzqOC, "izq");
-  dibujarUno(gifFlotanteDerOC, "der");
+  reader.readAsDataURL(file);
 }
 
-/* ---------- pipeline de exportación ---------- */
-btnGenerarOC.addEventListener("click", () => {
-  reproducirClic();
-  generarGifOC();
+function quitarFondoPlano(imageData, esNegro, tolerancia) {
+  const data = new Uint8ClampedArray(imageData.data);
+  const objetivo = esNegro ? 0 : 255;
+  const banda = 30; // ancho del borde suavizado, en unidades de distancia de color
+
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i], g = data[i + 1], b = data[i + 2];
+    const dist = Math.max(Math.abs(r - objetivo), Math.abs(g - objetivo), Math.abs(b - objetivo));
+    if (dist <= tolerancia) {
+      data[i + 3] = 0;
+    } else if (dist <= tolerancia + banda) {
+      const factor = (dist - tolerancia) / banda;
+      data[i + 3] = Math.round(data[i + 3] * factor);
+    }
+  }
+  return new ImageData(data, imageData.width, imageData.height);
+}
+
+function aplicarQuitarFondo() {
+  if (!originalFondo) return;
+  const esNegro = radioNegro.checked;
+  const resultado = quitarFondoPlano(originalFondo, esNegro, parseInt(sliderTolerancia.value, 10));
+  ctxFondo.putImageData(resultado, 0, 0);
+}
+
+[radioBlanco, radioNegro].forEach((r) => r.addEventListener("change", aplicarQuitarFondo));
+sliderTolerancia.addEventListener("input", () => {
+  valorTolerancia.textContent = sliderTolerancia.value;
+  aplicarQuitarFondo();
 });
 
-async function generarGifOC() {
-  if (!datosOC.imagen) {
-    estadoOC.textContent = "Subí una foto del personaje primero.";
-    return;
-  }
+btnDescargarFondo.addEventListener("click", () => {
+  canvasFondo.toBlob((blob) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = "reaper-sin-fondo.png"; a.click();
+  }, "image/png");
+});
 
-  btnGenerarOC.disabled = true;
-  resultadoOC.innerHTML = "";
-
-  const W = 720;
-  const H = calcularAltoTarjeta(document.createElement("canvas").getContext("2d"), datosOC);
-  const N_CUADROS = 20;
-  const DELAY_CS = 5; // 50ms por cuadro (~20 fps)
-
-  const canvasExport = document.createElement("canvas");
-  canvasExport.width = W; canvasExport.height = H;
-  const ctxExport = canvasExport.getContext("2d", { willReadFrequently: true });
-
-  estadoOC.textContent = "Renderizando cuadros...";
-  const imageDatas = [];
-  for (let i = 0; i < N_CUADROS; i++) {
-    const tActual = i / N_CUADROS;
-    dibujarTarjetaOC(ctxExport, W, H, tActual, datosOC);
-    dibujarGifsFlotantes(ctxExport, W, H, tActual);
-    let datos;
-    try {
-      datos = ctxExport.getImageData(0, 0, W, H);
-    } catch (err) {
-      estadoOC.textContent = "No pude leer el canvas (seguramente el logo, algún marco o algún gif del universo no tiene CORS habilitado). Probá subiéndolos a GitHub y usando el link \"raw\", o probá sin universo.";
-      btnGenerarOC.disabled = false;
-      return;
-    }
-    imageDatas.push(datos);
-    if (i % 4 === 0) await new Promise((r) => setTimeout(r, 0));
-  }
-
-  estadoOC.textContent = "Generando paleta de colores...";
-  await new Promise((r) => setTimeout(r, 0));
-  const muestras = muestrearPixeles(
-    [imageDatas[0], imageDatas[Math.floor(N_CUADROS / 2)], imageDatas[imageDatas.length - 1]],
-    4000
-  );
-  const paleta = construirPaletaMedianCut(muestras, 255);
-
-  const cuadrosIndices = [];
-  for (let i = 0; i < imageDatas.length; i++) {
-    estadoOC.textContent = `Cuantizando cuadros... (${i + 1}/${imageDatas.length})`;
-    cuadrosIndices.push(paletaAIndices(imageDatas[i], paleta));
-    if (i % 3 === 0) await new Promise((r) => setTimeout(r, 0));
-  }
-
-  estadoOC.textContent = "Codificando GIF...";
-  await new Promise((r) => setTimeout(r, 0));
-  const bytesGIF = construirBytesGIF({
-    width: W, height: H, paleta, indiceTransparente: 255,
-    cuadros: cuadrosIndices, delayCs: DELAY_CS,
-  });
-
-  const blob = new Blob([bytesGIF], { type: "image/gif" });
-  const url = URL.createObjectURL(blob);
-
+/* ---------- fila de resultado con miniatura (la usan Degradados y Estilo) ---------- */
+function filaResultadoConMiniatura(contenedor, nombre, url, tamanoOriginal, tamanoNuevo) {
+  const fila = document.createElement("div");
+  fila.className = "resultado-fila";
   const img = document.createElement("img");
   img.src = url;
-  img.alt = "Tarjeta de OC generada";
-  img.style.maxWidth = "100%";
-  img.style.borderRadius = "14px";
-  img.style.marginTop = "10px";
-
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "tarjeta-oc.gif";
-  link.textContent = "Descargar GIF";
-  link.className = "btn-accion";
-  link.style.display = "inline-block";
-  link.style.marginTop = "10px";
-  link.style.textDecoration = "none";
-
-  resultadoOC.appendChild(img);
-  resultadoOC.appendChild(document.createElement("br"));
-  resultadoOC.appendChild(link);
-
-  estadoOC.textContent = `Listo. ${formatoTamano(blob.size)}.`;
-  btnGenerarOC.disabled = false;
+  img.style.cssText = "width:44px;height:44px;object-fit:cover;border-radius:8px;flex-shrink:0;";
+  fila.appendChild(img);
+  const nombreSpan = document.createElement("span");
+  nombreSpan.className = "resultado-nombre";
+  nombreSpan.textContent = nombre;
+  fila.appendChild(nombreSpan);
+  const tamSpan = document.createElement("span");
+  tamSpan.className = "resultado-tamano";
+  tamSpan.textContent = formatoTamano(tamanoOriginal) + " → " + formatoTamano(tamanoNuevo);
+  fila.appendChild(tamSpan);
+  const a = document.createElement("a");
+  a.href = url; a.download = nombre; a.textContent = "Descargar";
+  fila.appendChild(a);
+  contenedor.appendChild(fila);
 }
-</script>
 
-</body>
-</html>
+/* ===================================================
