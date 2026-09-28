@@ -1149,9 +1149,46 @@ input[type=range] { accent-color: var(--rojo-brasa); width: 160px; }
       <div class="tarjeta-juego oculto" id="panel-galeria">
         <h3 class="tarjeta-titulo">Galería de Enlaces</h3>
 
+        <div class="controles-conversor">
+          <button class="btn-accion" id="btnRecargarGaleria">Recargar</button>
+          <button class="btn-accion" id="galToggleAgregar">+ Agregar enlace</button>
+        </div>
         <p class="tarjeta-texto" id="estadoGaleria" style="font-size:0.85rem;color:#b98f7e;"></p>
 
         <div class="grid-galeria" id="grid-galeria"></div>
+
+        <!-- formulario para agregar un enlace al reaper-links.json del repo -->
+        <div id="galFormAgregar" class="oculto" style="display:grid;gap:14px;border-top:1px solid var(--rojo-oscuro);padding-top:18px;">
+          <h4 class="tarjeta-titulo" style="font-size:1.1rem;">Agregar enlace al JSON</h4>
+          <p class="tarjeta-texto" style="font-size:0.85rem;">
+            Agrega una entrada nueva al final de <strong>reaper-links.json</strong> directo en tu repo.
+            Usa el mismo token de la herramienta "Subir a GitHub" (permiso <em>Contents: Read and write</em>).
+          </p>
+
+          <div class="controles-conversor">
+            <label for="galNombre" style="min-width:60px;">Título</label>
+            <input type="text" id="galNombre" class="campo-rt-linea" style="flex:1;min-width:200px;" placeholder="ej: Temp Mail">
+          </div>
+          <div class="controles-conversor">
+            <label for="galWeb" style="min-width:60px;">Link</label>
+            <input type="text" id="galWeb" class="campo-rt-linea" style="flex:1;min-width:200px;" placeholder="https://...">
+          </div>
+          <div class="controles-conversor">
+            <label for="galVector" style="min-width:60px;">Ícono</label>
+            <input type="text" id="galVector" class="campo-rt-linea" style="flex:1;min-width:200px;" placeholder="https://...svg o .png (opcional)">
+          </div>
+          <div class="controles-conversor">
+            <label for="galToken" style="min-width:60px;">Token</label>
+            <input type="password" id="galToken" class="campo-rt-linea" style="width:260px;" placeholder="github_pat_..." autocomplete="off">
+            <label style="display:flex;align-items:center;gap:6px;">
+              <input type="checkbox" id="galRecordar" style="width:16px;height:16px;"> recordar en este navegador
+            </label>
+          </div>
+          <div class="controles-conversor">
+            <button class="btn-accion" id="galGuardar">Agregar y guardar en GitHub</button>
+          </div>
+          <p class="tarjeta-texto" id="galEstado" style="font-size:0.85rem;color:#b98f7e;"></p>
+        </div>
       </div>
 
     </section>
@@ -3609,6 +3646,144 @@ ghSubir.addEventListener("click", async () => {
   ghSubir.disabled = false;
 });
 </script>
-   
+<script>
+/* =========================================================
+   GALERÍA: agregar enlaces al reaper-links.json del repo
+   ========================================================= */
+(function () {
+  const USUARIO = "Reaper181222";
+  const REPO = "Reaper-Tools";
+  const RAMA = "main";
+  const ARCHIVO = "reaper-links.json";
+
+  const toggle = document.getElementById("galToggleAgregar");
+  const form = document.getElementById("galFormAgregar");
+  const inNombre = document.getElementById("galNombre");
+  const inWeb = document.getElementById("galWeb");
+  const inVector = document.getElementById("galVector");
+  const inToken = document.getElementById("galToken");
+  const chkRecordar = document.getElementById("galRecordar");
+  const btnGuardar = document.getElementById("galGuardar");
+  const estado = document.getElementById("galEstado");
+
+  // reusa el token si ya lo guardaste en "Subir a GitHub"
+  try {
+    const guardado = localStorage.getItem("reaper-gh-token");
+    if (guardado) { inToken.value = guardado; chkRecordar.checked = true; }
+  } catch (e) {}
+
+  toggle.addEventListener("click", () => form.classList.toggle("oculto"));
+
+  function b64ATexto(b64) {
+    const bin = atob(b64.replace(/\s/g, ""));
+    const bytes = Uint8Array.from(bin, (c) => c.charCodeAt(0));
+    return new TextDecoder().decode(bytes); // UTF-8: respeta tildes y emojis
+  }
+  function textoAB64(texto) {
+    const bytes = new TextEncoder().encode(texto);
+    let bin = "";
+    bytes.forEach((b) => { bin += String.fromCharCode(b); });
+    return btoa(bin);
+  }
+
+  // mismo formato que tu archivo: un objeto por línea
+  function serializar(lista) {
+    const lineas = lista.map((it) =>
+      `  { "nombre": ${JSON.stringify(it.nombre)}, "vector": ${JSON.stringify(it.vector || "")}, "web": ${JSON.stringify(it.web)} }`
+    );
+    return "[\n" + lineas.join(",\n") + "\n]\n";
+  }
+
+  function cabeceras() {
+    return {
+      "Authorization": "Bearer " + inToken.value.trim(),
+      "Accept": "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+    };
+  }
+
+  btnGuardar.addEventListener("click", async () => {
+    const nombre = inNombre.value.trim();
+    const web = inWeb.value.trim();
+    const vector = inVector.value.trim();
+
+    if (!nombre || !web) { estado.textContent = "Poné al menos el título y el link."; return; }
+    if (!/^https?:\/\//i.test(web)) { estado.textContent = "El link tiene que empezar con http:// o https://"; return; }
+    if (vector && !/^https?:\/\//i.test(vector)) { estado.textContent = "El ícono tiene que ser un link http(s) (o dejalo vacío)."; return; }
+    if (!inToken.value.trim()) { estado.textContent = "Pegá el token de GitHub."; return; }
+
+    try {
+      if (chkRecordar.checked) localStorage.setItem("reaper-gh-token", inToken.value.trim());
+      else localStorage.removeItem("reaper-gh-token");
+    } catch (e) {}
+
+    btnGuardar.disabled = true;
+    estado.textContent = "Leyendo el JSON del repo...";
+    const url = `https://api.github.com/repos/${USUARIO}/${REPO}/contents/${ARCHIVO}`;
+
+    try {
+      // 1) traer el archivo actual (y su sha, que GitHub pide para actualizarlo)
+      const resp = await fetch(url + "?ref=" + encodeURIComponent(RAMA), { headers: cabeceras() });
+      if (!resp.ok) throw new Error(`no pude leer ${ARCHIVO} (GitHub respondió ${resp.status}). Revisá el token.`);
+      const info = await resp.json();
+      const lista = JSON.parse(b64ATexto(info.content));
+      if (!Array.isArray(lista)) throw new Error("el JSON del repo no es una lista");
+
+      if (lista.some((it) => it.web === web)) {
+        if (!confirm("Ya hay un enlace con ese mismo link. ¿Agregarlo igual?")) {
+          estado.textContent = "Cancelado.";
+          btnGuardar.disabled = false;
+          return;
+        }
+      }
+
+      // 2) agregar la entrada nueva al final
+      const nuevo = { nombre, vector, web };
+      lista.push(nuevo);
+
+      // 3) guardar
+      estado.textContent = "Guardando en GitHub...";
+      const put = await fetch(url, {
+        method: "PUT",
+        headers: { ...cabeceras(), "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: `Agregar "${nombre}" a la galería desde Reaper Tools`,
+          content: textoAB64(serializar(lista)),
+          sha: info.sha,
+          branch: RAMA,
+        }),
+      });
+      if (!put.ok) {
+        const err = await put.json().catch(() => ({}));
+        throw new Error(err.message || "GitHub respondió " + put.status);
+      }
+
+      // 4) mostrarlo ya mismo en la grilla (GitHub Pages tarda ~1 min en reflejar el JSON nuevo)
+      const grid = document.getElementById("grid-galeria");
+      const a = document.createElement("a");
+      a.href = web; a.target = "_blank"; a.rel = "noopener"; a.className = "item-galeria";
+      const icono = document.createElement("span");
+      icono.className = "icono-galeria";
+      if (vector) {
+        const img = document.createElement("img");
+        img.src = vector; img.alt = nombre;
+        img.onerror = () => { img.style.opacity = "0.25"; };
+        icono.appendChild(img);
+      }
+      const etiqueta = document.createElement("span");
+      etiqueta.className = "etiqueta-galeria";
+      etiqueta.textContent = nombre;
+      a.appendChild(icono); a.appendChild(etiqueta);
+      grid.appendChild(a);
+
+      inNombre.value = ""; inWeb.value = ""; inVector.value = "";
+      estado.textContent = `Listo: "${nombre}" agregado (${lista.length} enlaces en total). En la web publicada tarda un minuto en aparecer al recargar.`;
+    } catch (err) {
+      estado.textContent = "Error: " + err.message;
+    }
+    btnGuardar.disabled = false;
+  });
+})();
+</script>
 </body>
 </html>
