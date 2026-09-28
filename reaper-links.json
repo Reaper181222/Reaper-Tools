@@ -4,6 +4,7 @@
   { "nombre": "Marca Gemini", "vector": "https://thesvg.org/icons/gemini-google/color.svg", "web": "https://geminiwatermarkremover.io/es" },
   { "nombre": "Temp Mail", "vector": "https://thesvg.org/icons/rainloop-webmail-badge/default.svg", "web": "https://temp-mail.org/es/" },
   { "nombre": "Viprin", "vector": "https://static.wikia.nocookie.net/transformice/images/5/59/Map_editor_menu.png/revision/latest/scale-to-width-down/1875?cb=20160129114509", "web": "https://adamay000.github.io/vde/index.html" },
-  { "nombre": "TFM Dressing", "vector": "https://static.wikia.nocookie.net/transformice/images/5/55/Piel_Leopardo_de_las_nieves.png/revision/latest?cb=20140224134502&path-prefix=es", "web": "https://projects.fewfre.com/a801/transformice/dressroom/" }, 
-  { "nombre": "Miceditor", "vector": "https://static.wikia.nocookie.net/transformice/images/5/5c/Mouse.png/revision/latest/scale-to-width-down/284?cb=20240126163323", "web": "https://entibo.github.io/miceditor/" }
+  { "nombre": "TFM Dressing", "vector": "https://static.wikia.nocookie.net/transformice/images/5/55/Piel_Leopardo_de_las_nieves.png/revision/latest?cb=20140224134502&path-prefix=es", "web": "https://projects.fewfre.com/a801/transformice/dressroom/" },
+  { "nombre": "Miceditor", "vector": "https://static.wikia.nocookie.net/transformice/images/5/5c/Mouse.png/revision/latest/scale-to-width-down/284?cb=20240126163323", "web": "https://entibo.github.io/miceditor/" },
+  { "nombre": "I ❤️ PDF", "vector": "https://cdn.aptoide.com/imgs/d/d/7/dd7b41dd5b8f4a4fb75d3844197eeb49_icon.png", "web": "https://www.ilovepdf.com" }
 ]
