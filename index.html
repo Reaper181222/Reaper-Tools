@@ -548,6 +548,49 @@ input[type=range] { accent-color: var(--rojo-brasa); width: 160px; }
           </span>
         </button>
 
+         <!-- BOTÓN: Buscar y Reemplazar Texto -->
+         <button class="btn-juego" data-herramienta="reemplazartexto">
+           <span class="btn-icono">
+             <svg viewBox="0 0 24 24" fill="none" stroke="#fff3e6" stroke-width="1.8">
+               <path d="M4 7h10M4 12h7M4 17h10" stroke-linecap="round"/>
+               <path d="M16 10l4 3-4 3" stroke-linecap="round" stroke-linejoin="round"/>
+             </svg>
+           </span>
+           <span class="btn-texto">
+             Buscar y Reemplazar
+              <span class="btn-subtexto">texto o .txt, o borrar</span>
+           </span>
+         </button>
+
+<!-- BOTÓN: Word a PDF -->
+<button class="btn-juego" data-herramienta="wordpdf">
+  <span class="btn-icono">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff3e6" stroke-width="1.8">
+      <path d="M6 3h8l4 4v14H6z" stroke-linejoin="round"/>
+      <path d="M14 3v4h4" stroke-linejoin="round"/>
+      <path d="M9 13h6M9 17h6" stroke-linecap="round"/>
+    </svg>
+  </span>
+  <span class="btn-texto">
+    Word a PDF
+    <span class="btn-subtexto">docx → pdf</span>
+  </span>
+</button>
+
+<!-- BOTÓN: Subir a GitHub -->
+<button class="btn-juego" data-herramienta="subirgithub">
+  <span class="btn-icono">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff3e6" stroke-width="1.8">
+      <path d="M12 16V5M7 9l5-5 5 5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4" stroke-linecap="round"/>
+    </svg>
+  </span>
+  <span class="btn-texto">
+    Subir a GitHub
+    <span class="btn-subtexto">archivos al repo, en la carpeta que elijas</span>
+  </span>
+</button>
+
         <!-- ============================================================
              BOTÓN: Estilo Artístico
              ============================================================ -->
@@ -938,6 +981,131 @@ input[type=range] { accent-color: var(--rojo-brasa); width: 160px; }
         </div>
       </div>
 
+      <!-- PANEL: Buscar y Reemplazar Texto -->
+<div class="tarjeta-juego oculto" id="panel-reemplazartexto">
+  <h3 class="tarjeta-titulo">Buscar y Reemplazar Texto</h3>
+  <p class="tarjeta-texto">Pegá texto o subí un .txt. Se respetan enters, espacios, símbolos y emojis. Buscá una palabra, símbolo o frase (incluso con saltos de línea) y la cambia por lo que pongas, o la borra.</p>
+
+  <div class="dropzone" id="rtDrop">
+    <p><strong>Hacé clic para elegir un .txt</strong> o arrastralo acá (o pegá el texto abajo).</p>
+    <input type="file" id="rtArchivo" accept=".txt,text/plain">
+  </div>
+  <p class="tarjeta-texto" id="rtNombreArchivo" style="font-size:0.8rem;color:#b98f7e;margin:0;"></p>
+
+  <textarea id="rtEntrada" class="campo-rt" rows="8" spellcheck="false" placeholder="Texto original..."></textarea>
+
+  <div class="controles-conversor" style="align-items:flex-start;">
+    <div style="flex:1;min-width:200px;">
+      <label for="rtBuscar">Buscar</label>
+      <textarea id="rtBuscar" class="campo-rt" rows="2" spellcheck="false" placeholder="palabra, símbolo, frase o emoji"></textarea>
+    </div>
+    <div style="flex:1;min-width:200px;">
+      <label for="rtReemplazo">Reemplazar por</label>
+      <textarea id="rtReemplazo" class="campo-rt" rows="2" spellcheck="false" placeholder="texto nuevo"></textarea>
+    </div>
+  </div>
+
+  <div class="controles-conversor">
+    <label style="display:flex;align-items:center;gap:6px;">
+      <input type="checkbox" id="rtBorrar" style="width:16px;height:16px;"> Reemplazar por nada (borrar)
+    </label>
+    <label style="display:flex;align-items:center;gap:6px;">
+      <input type="checkbox" id="rtMayus" style="width:16px;height:16px;"> Distinguir mayúsculas/minúsculas
+    </label>
+  </div>
+
+  <div class="controles-conversor">
+    <button class="btn-accion" id="rtAplicar">Reemplazar</button>
+    <button class="btn-accion" id="rtCopiar" disabled>Copiar resultado</button>
+    <button class="btn-accion" id="rtDescargar" disabled>Descargar .txt</button>
+    <button class="btn-accion" id="rtLimpiar">Limpiar</button>
+  </div>
+  <p class="tarjeta-texto" id="rtEstado" style="font-size:0.85rem;color:#b98f7e;"></p>
+
+  <textarea id="rtSalida" class="campo-rt" rows="8" spellcheck="false" readonly placeholder="Acá aparece el resultado..."></textarea>
+</div>
+
+<!-- PANEL: Word a PDF -->
+<div class="tarjeta-juego oculto" id="panel-wordpdf">
+  <h3 class="tarjeta-titulo">Word a PDF</h3>
+  <p class="tarjeta-texto">
+    Subí un .docx y se convierte en tu navegador (no se sube a ningún lado). Ojo: el formato "clásico" .doc
+    no se puede leer desde el navegador; abrilo en Word y guardalo como .docx. La conversión mantiene texto,
+    títulos, listas, tablas e imágenes, pero no es idéntica a Word (fuentes raras, columnas o encabezados complejos pueden cambiar).
+    "Descargar PDF" genera el archivo directo (el texto queda como imagen); "Imprimir / Guardar como PDF" usa el diálogo
+    del navegador y deja texto seleccionable y más liviano.
+  </p>
+
+  <div class="dropzone" id="dwDrop">
+    <p><strong>Hacé clic para elegir el .docx</strong> o arrastralo acá.</p>
+    <input type="file" id="dwArchivo" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+  </div>
+  <p class="tarjeta-texto" id="dwNombre" style="font-size:0.8rem;color:#b98f7e;margin:0;"></p>
+
+  <div class="controles-conversor">
+    <button class="btn-accion" id="dwPdf" disabled>Descargar PDF</button>
+    <button class="btn-accion" id="dwImprimir" disabled>Imprimir / Guardar como PDF</button>
+  </div>
+  <p class="tarjeta-texto" id="dwEstado" style="font-size:0.85rem;color:#b98f7e;"></p>
+
+  <!-- contenedor fuera de pantalla que se usa para generar el PDF -->
+  <div id="dwRender" class="dw-doc" style="position:fixed;left:-10000px;top:0;width:794px;background:#fff;color:#000;"></div>
+</div>
+
+<!-- PANEL: Subir a GitHub -->
+<div class="tarjeta-juego oculto" id="panel-subirgithub">
+  <h3 class="tarjeta-titulo">Subir a GitHub</h3>
+  <p class="tarjeta-texto">
+    Sube uno o varios archivos directo a tu repositorio, en la carpeta que elijas (si no existe, se crea).
+    Para eso necesita un <strong>token personal</strong> de GitHub: Settings → Developer settings → Personal access tokens →
+    Fine-grained tokens → Generate. Elegí solo el repo Reaper-Tools y en Permissions poné <em>Contents: Read and write</em>.
+    El token nunca lo escribas dentro del HTML ni lo subas al repo: pegalo acá cada vez, o tildá "recordar" para guardarlo solo en este navegador.
+  </p>
+
+  <div class="controles-conversor">
+    <label for="ghUsuario">Usuario</label>
+    <input type="text" id="ghUsuario" class="campo-rt-linea" value="Reaper181222">
+    <label for="ghRepo">Repo</label>
+    <input type="text" id="ghRepo" class="campo-rt-linea" value="Reaper-Tools">
+    <label for="ghRama">Rama</label>
+    <input type="text" id="ghRama" class="campo-rt-linea" value="main" style="width:90px;">
+  </div>
+
+  <div class="controles-conversor">
+    <label for="ghToken">Token</label>
+    <input type="password" id="ghToken" class="campo-rt-linea" style="width:260px;" placeholder="github_pat_..." autocomplete="off">
+    <label style="display:flex;align-items:center;gap:6px;">
+      <input type="checkbox" id="ghRecordar" style="width:16px;height:16px;"> recordar en este navegador
+    </label>
+  </div>
+
+  <div class="controles-conversor">
+    <label for="ghCarpeta">Carpeta</label>
+    <input type="text" id="ghCarpeta" class="campo-rt-linea" list="ghCarpetas" style="width:260px;" placeholder="ej: imagenes/logos (vacío = raíz)">
+    <datalist id="ghCarpetas"></datalist>
+    <button class="btn-accion" id="ghCargarCarpetas">Cargar carpetas del repo</button>
+  </div>
+
+  <div class="controles-conversor">
+    <label style="display:flex;align-items:center;gap:6px;">
+      <input type="checkbox" id="ghSobrescribir" style="width:16px;height:16px;"> Sobrescribir si ya existe un archivo con ese nombre
+    </label>
+  </div>
+
+  <div class="dropzone" id="ghDrop">
+    <p><strong>Hacé clic para elegir archivos</strong> o arrastralos acá (fotos u otros).</p>
+    <input type="file" id="ghArchivos" multiple>
+  </div>
+  <p class="tarjeta-texto" id="ghLista" style="font-size:0.8rem;color:#b98f7e;margin:0;"></p>
+
+  <div class="controles-conversor">
+    <button class="btn-accion" id="ghSubir" disabled>Subir al repo</button>
+    <button class="btn-accion" id="ghLimpiar" disabled>Limpiar</button>
+  </div>
+  <p class="tarjeta-texto" id="ghEstado" style="font-size:0.85rem;color:#b98f7e;"></p>
+  <div class="resultados" id="ghResultados"></div>
+</div>
+       
       <!-- ============================================================
            PANEL: Estilo Artístico
            ============================================================ -->
@@ -3047,5 +3215,403 @@ async function cargarGaleria() {
 cargarGaleria();
 </script>
 
+<script>
+/* =========================================================
+   REAPER TOOLS — herramientas nuevas
+   (buscar/reemplazar texto, Word a PDF, subir a GitHub)
+   ========================================================= */
+
+/* ---------- estilos de los campos nuevos (así no tocás el <style>) ---------- */
+(function () {
+  const st = document.createElement("style");
+  st.textContent = `
+    .campo-rt { width:100%; background:var(--negro); color:var(--hueso); border:2px solid var(--rojo-fuego);
+      border-radius:12px; padding:12px; font-family:monospace; font-size:0.85rem; resize:vertical; white-space:pre-wrap; }
+    .campo-rt:focus-visible, .campo-rt-linea:focus-visible { outline:2px solid var(--dorado); }
+    .campo-rt-linea { background:var(--negro); color:var(--hueso); border:2px solid var(--rojo-fuego);
+      border-radius:10px; padding:7px 10px; font-family:var(--fuente-texto); font-size:0.85rem; width:150px; }
+    .dw-doc { font-family: Arial, Helvetica, sans-serif; font-size: 12pt; line-height: 1.4; }
+    .dw-doc img { max-width:100%; height:auto; }
+    .dw-doc table { border-collapse:collapse; max-width:100%; }
+    .dw-doc td, .dw-doc th { border:1px solid #999; padding:4px 6px; }
+    .dw-doc h1, .dw-doc h2, .dw-doc h3 { page-break-after: avoid; }
+  `;
+  document.head.appendChild(st);
+})();
+
+/* ---------- engancha los paneles nuevos a abrirHerramienta ---------- */
+(function () {
+  const nuevos = ["reemplazartexto", "wordpdf", "subirgithub"];
+  const original = abrirHerramienta;
+  abrirHerramienta = function (id) {
+    nuevos.forEach((p) => {
+      if (p === id) return;
+      document.getElementById("panel-" + p).classList.add("oculto");
+      document.querySelector(`[data-herramienta="${p}"]`).classList.remove("activo");
+    });
+    original(id);
+  };
+})();
+
+/* cargador de librerías externas solo cuando hacen falta */
+const _scriptsCargados = {};
+function cargarScriptExterno(url) {
+  if (_scriptsCargados[url]) return _scriptsCargados[url];
+  _scriptsCargados[url] = new Promise((res, rej) => {
+    const s = document.createElement("script");
+    s.src = url;
+    s.onload = res;
+    s.onerror = () => { delete _scriptsCargados[url]; rej(new Error("No pude cargar " + url)); };
+    document.head.appendChild(s);
+  });
+  return _scriptsCargados[url];
+}
+
+/* =========================================================
+   BUSCAR Y REEMPLAZAR TEXTO
+   ========================================================= */
+const rtDrop = document.getElementById("rtDrop");
+const rtArchivo = document.getElementById("rtArchivo");
+const rtNombreArchivo = document.getElementById("rtNombreArchivo");
+const rtEntrada = document.getElementById("rtEntrada");
+const rtBuscar = document.getElementById("rtBuscar");
+const rtReemplazo = document.getElementById("rtReemplazo");
+const rtBorrar = document.getElementById("rtBorrar");
+const rtMayus = document.getElementById("rtMayus");
+const rtAplicar = document.getElementById("rtAplicar");
+const rtCopiar = document.getElementById("rtCopiar");
+const rtDescargar = document.getElementById("rtDescargar");
+const rtLimpiar = document.getElementById("rtLimpiar");
+const rtEstado = document.getElementById("rtEstado");
+const rtSalida = document.getElementById("rtSalida");
+
+let rtNombreBase = "texto";
+
+rtDrop.addEventListener("click", () => rtArchivo.click());
+rtArchivo.addEventListener("change", (e) => rtCargarTxt(e.target.files[0]));
+["dragover", "dragenter"].forEach((evt) => rtDrop.addEventListener(evt, (e) => { e.preventDefault(); rtDrop.classList.add("arrastrando"); }));
+["dragleave", "drop"].forEach((evt) => rtDrop.addEventListener(evt, (e) => { e.preventDefault(); rtDrop.classList.remove("arrastrando"); }));
+rtDrop.addEventListener("drop", (e) => { if (e.dataTransfer.files[0]) rtCargarTxt(e.dataTransfer.files[0]); });
+
+async function rtCargarTxt(file) {
+  if (!file) return;
+  rtEntrada.value = await file.text(); // UTF-8: respeta emojis y símbolos
+  rtNombreBase = file.name.replace(/\.[^.]+$/, "");
+  rtNombreArchivo.textContent = "Cargado: " + file.name;
+}
+
+rtBorrar.addEventListener("change", () => {
+  rtReemplazo.disabled = rtBorrar.checked;
+  rtReemplazo.style.opacity = rtBorrar.checked ? "0.4" : "1";
+});
+
+function rtEscapar(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+
+rtAplicar.addEventListener("click", () => {
+  const texto = rtEntrada.value;
+  const buscar = rtBuscar.value;
+  if (!buscar) { rtEstado.textContent = "Escribí qué querés buscar."; return; }
+  const nuevo = rtBorrar.checked ? "" : rtReemplazo.value;
+  const re = new RegExp(rtEscapar(buscar), rtMayus.checked ? "g" : "gi");
+  let cantidad = 0;
+  rtSalida.value = texto.replace(re, () => { cantidad++; return nuevo; });
+  rtEstado.textContent = cantidad
+    ? `Listo: ${cantidad} coincidencia(s) ${rtBorrar.checked ? "borrada(s)" : "reemplazada(s)"}.`
+    : "No encontré ese texto.";
+  rtCopiar.disabled = false;
+  rtDescargar.disabled = false;
+});
+
+rtCopiar.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(rtSalida.value);
+    rtEstado.textContent = "Copiado al portapapeles.";
+  } catch (e) {
+    rtSalida.select();
+    document.execCommand("copy");
+    rtEstado.textContent = "Copiado.";
+  }
+});
+
+rtDescargar.addEventListener("click", () => {
+  const blob = new Blob([rtSalida.value], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = rtNombreBase + "-reemplazado.txt"; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+});
+
+rtLimpiar.addEventListener("click", () => {
+  rtEntrada.value = ""; rtBuscar.value = ""; rtReemplazo.value = ""; rtSalida.value = "";
+  rtBorrar.checked = false; rtReemplazo.disabled = false; rtReemplazo.style.opacity = "1";
+  rtNombreArchivo.textContent = ""; rtEstado.textContent = ""; rtArchivo.value = "";
+  rtCopiar.disabled = true; rtDescargar.disabled = true; rtNombreBase = "texto";
+});
+
+/* =========================================================
+   WORD (.docx) A PDF
+   mammoth.js: docx -> HTML | html2pdf.js: HTML -> PDF
+   ========================================================= */
+const dwDrop = document.getElementById("dwDrop");
+const dwArchivo = document.getElementById("dwArchivo");
+const dwNombre = document.getElementById("dwNombre");
+const dwPdf = document.getElementById("dwPdf");
+const dwImprimir = document.getElementById("dwImprimir");
+const dwEstado = document.getElementById("dwEstado");
+const dwRender = document.getElementById("dwRender");
+
+let dwHtml = "";
+let dwNombreBase = "documento";
+
+dwDrop.addEventListener("click", () => dwArchivo.click());
+dwArchivo.addEventListener("change", (e) => dwCargar(e.target.files[0]));
+["dragover", "dragenter"].forEach((evt) => dwDrop.addEventListener(evt, (e) => { e.preventDefault(); dwDrop.classList.add("arrastrando"); }));
+["dragleave", "drop"].forEach((evt) => dwDrop.addEventListener(evt, (e) => { e.preventDefault(); dwDrop.classList.remove("arrastrando"); }));
+dwDrop.addEventListener("drop", (e) => { if (e.dataTransfer.files[0]) dwCargar(e.dataTransfer.files[0]); });
+
+async function dwCargar(file) {
+  if (!file) return;
+  dwPdf.disabled = true; dwImprimir.disabled = true;
+  dwHtml = "";
+
+  if (/\.doc$/i.test(file.name)) {
+    dwEstado.textContent = "Los .doc viejos no se pueden leer desde el navegador. Abrilo en Word, guardalo como .docx y subilo de nuevo.";
+    return;
+  }
+  if (!/\.docx$/i.test(file.name)) {
+    dwEstado.textContent = "Tiene que ser un archivo .docx.";
+    return;
+  }
+
+  dwNombre.textContent = "Cargado: " + file.name;
+  dwNombreBase = file.name.replace(/\.docx$/i, "");
+  dwEstado.textContent = "Leyendo el documento...";
+  try {
+    await cargarScriptExterno("https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js");
+    const buffer = await file.arrayBuffer();
+    const resultado = await mammoth.convertToHtml({ arrayBuffer: buffer });
+    dwHtml = resultado.value;
+    dwRender.innerHTML = dwHtml;
+    dwPdf.disabled = false;
+    dwImprimir.disabled = false;
+    dwEstado.textContent = "Listo para convertir.";
+  } catch (err) {
+    dwEstado.textContent = "No pude leer ese documento: " + err.message;
+  }
+}
+
+dwPdf.addEventListener("click", async () => {
+  if (!dwHtml) return;
+  dwPdf.disabled = true;
+  dwEstado.textContent = "Generando PDF...";
+  try {
+    await cargarScriptExterno("https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js");
+    await html2pdf().set({
+      margin: 15,
+      filename: dwNombreBase + ".pdf",
+      image: { type: "jpeg", quality: 0.95 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+      pagebreak: { mode: ["css", "legacy"] },
+    }).from(dwRender).save();
+    dwEstado.textContent = "Listo, PDF descargado.";
+  } catch (err) {
+    dwEstado.textContent = "Falló la conversión: " + err.message;
+  }
+  dwPdf.disabled = false;
+});
+
+dwImprimir.addEventListener("click", () => {
+  if (!dwHtml) return;
+  const iframe = document.createElement("iframe");
+  iframe.style.cssText = "position:fixed;right:0;bottom:0;width:0;height:0;border:0;";
+  document.body.appendChild(iframe);
+  const doc = iframe.contentWindow.document;
+  doc.open();
+  doc.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${dwNombreBase}</title>
+    <style>
+      body{font-family:Arial,Helvetica,sans-serif;font-size:12pt;line-height:1.4;color:#000;margin:20mm;}
+      img{max-width:100%;height:auto;} table{border-collapse:collapse;max-width:100%;}
+      td,th{border:1px solid #999;padding:4px 6px;}
+    </style></head><body>${dwHtml}</body></html>`);
+  doc.close();
+  setTimeout(() => {
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
+    setTimeout(() => iframe.remove(), 60000);
+  }, 400);
+  dwEstado.textContent = 'En el diálogo de impresión elegí "Guardar como PDF".';
+});
+
+/* =========================================================
+   SUBIR ARCHIVOS A GITHUB (API REST, con token personal)
+   ========================================================= */
+const ghUsuario = document.getElementById("ghUsuario");
+const ghRepo = document.getElementById("ghRepo");
+const ghRama = document.getElementById("ghRama");
+const ghToken = document.getElementById("ghToken");
+const ghRecordar = document.getElementById("ghRecordar");
+const ghCarpeta = document.getElementById("ghCarpeta");
+const ghCarpetas = document.getElementById("ghCarpetas");
+const ghCargarCarpetas = document.getElementById("ghCargarCarpetas");
+const ghSobrescribir = document.getElementById("ghSobrescribir");
+const ghDrop = document.getElementById("ghDrop");
+const ghArchivos = document.getElementById("ghArchivos");
+const ghLista = document.getElementById("ghLista");
+const ghSubir = document.getElementById("ghSubir");
+const ghLimpiar = document.getElementById("ghLimpiar");
+const ghEstado = document.getElementById("ghEstado");
+const ghResultados = document.getElementById("ghResultados");
+
+let ghPendientes = [];
+
+try {
+  const guardado = localStorage.getItem("reaper-gh-token");
+  if (guardado) { ghToken.value = guardado; ghRecordar.checked = true; }
+} catch (e) { /* sin localStorage, seguimos igual */ }
+
+ghDrop.addEventListener("click", () => ghArchivos.click());
+ghArchivos.addEventListener("change", (e) => ghAgregar(e.target.files));
+["dragover", "dragenter"].forEach((evt) => ghDrop.addEventListener(evt, (e) => { e.preventDefault(); ghDrop.classList.add("arrastrando"); }));
+["dragleave", "drop"].forEach((evt) => ghDrop.addEventListener(evt, (e) => { e.preventDefault(); ghDrop.classList.remove("arrastrando"); }));
+ghDrop.addEventListener("drop", (e) => ghAgregar(e.dataTransfer.files));
+
+function ghAgregar(lista) {
+  ghPendientes = ghPendientes.concat(Array.from(lista));
+  ghLista.textContent = ghPendientes.length ? "Para subir: " + ghPendientes.map((f) => f.name).join(", ") : "";
+  ghSubir.disabled = !ghPendientes.length;
+  ghLimpiar.disabled = !ghPendientes.length;
+}
+
+ghLimpiar.addEventListener("click", () => {
+  ghPendientes = [];
+  ghLista.textContent = "";
+  ghArchivos.value = "";
+  ghSubir.disabled = true;
+  ghLimpiar.disabled = true;
+});
+
+function ghCabeceras() {
+  return {
+    "Authorization": "Bearer " + ghToken.value.trim(),
+    "Accept": "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
+  };
+}
+
+function ghRutaCodificada(ruta) {
+  return ruta.split("/").map(encodeURIComponent).join("/");
+}
+
+function ghArchivoABase64(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result.split(",")[1]);
+    r.onerror = () => rej(new Error("No pude leer " + file.name));
+    r.readAsDataURL(file);
+  });
+}
+
+function ghGuardarToken() {
+  try {
+    if (ghRecordar.checked) localStorage.setItem("reaper-gh-token", ghToken.value.trim());
+    else localStorage.removeItem("reaper-gh-token");
+  } catch (e) {}
+}
+
+ghCargarCarpetas.addEventListener("click", async () => {
+  if (!ghToken.value.trim()) { ghEstado.textContent = "Pegá primero el token."; return; }
+  ghEstado.textContent = "Buscando carpetas...";
+  try {
+    const u = ghUsuario.value.trim(), r = ghRepo.value.trim(), b = ghRama.value.trim();
+    const resp = await fetch(`https://api.github.com/repos/${u}/${r}/git/trees/${encodeURIComponent(b)}?recursive=1`, { headers: ghCabeceras() });
+    if (!resp.ok) throw new Error(`GitHub respondió ${resp.status}`);
+    const data = await resp.json();
+    ghCarpetas.innerHTML = "";
+    const carpetas = data.tree.filter((n) => n.type === "tree").map((n) => n.path);
+    carpetas.forEach((c) => { const o = document.createElement("option"); o.value = c; ghCarpetas.appendChild(o); });
+    ghEstado.textContent = `${carpetas.length} carpeta(s) encontradas. Podés elegir una o escribir una nueva.`;
+    ghGuardarToken();
+  } catch (err) {
+    ghEstado.textContent = "No pude leer el repo: " + err.message + " (revisá token, usuario, repo y rama).";
+  }
+});
+
+ghSubir.addEventListener("click", async () => {
+  if (!ghToken.value.trim()) { ghEstado.textContent = "Pegá el token de GitHub."; return; }
+  if (!ghPendientes.length) return;
+
+  const u = ghUsuario.value.trim(), r = ghRepo.value.trim(), b = ghRama.value.trim();
+  const carpeta = ghCarpeta.value.trim().replace(/^\/+|\/+$/g, "");
+  ghGuardarToken();
+
+  ghSubir.disabled = true;
+  ghResultados.innerHTML = "";
+  let ok = 0;
+
+  // en serie, porque cada commit cambia la rama y en paralelo se pisarían
+  for (let i = 0; i < ghPendientes.length; i++) {
+    const file = ghPendientes[i];
+    const ruta = (carpeta ? carpeta + "/" : "") + file.name;
+    const url = `https://api.github.com/repos/${u}/${r}/contents/${ghRutaCodificada(ruta)}`;
+    ghEstado.textContent = `Subiendo ${i + 1} de ${ghPendientes.length}: ${file.name}...`;
+
+    const fila = document.createElement("div");
+    fila.className = "resultado-fila";
+    const nombreSpan = document.createElement("span");
+    nombreSpan.className = "resultado-nombre";
+    nombreSpan.textContent = ruta;
+    const estadoSpan = document.createElement("span");
+    estadoSpan.className = "resultado-tamano";
+    fila.appendChild(nombreSpan);
+    fila.appendChild(estadoSpan);
+    ghResultados.appendChild(fila);
+
+    try {
+      // ¿ya existe? (necesitamos su sha para sobrescribir)
+      let sha = null;
+      const previo = await fetch(url + "?ref=" + encodeURIComponent(b), { headers: ghCabeceras() });
+      if (previo.ok) {
+        const info = await previo.json();
+        sha = info.sha;
+        if (!ghSobrescribir.checked) {
+          estadoSpan.textContent = "ya existe, saltado";
+          continue;
+        }
+      } else if (previo.status !== 404) {
+        throw new Error("GitHub respondió " + previo.status);
+      }
+
+      const contenido = await ghArchivoABase64(file);
+      const body = { message: "Subir " + file.name + " desde Reaper Tools", content: contenido, branch: b };
+      if (sha) body.sha = sha;
+
+      const resp = await fetch(url, {
+        method: "PUT",
+        headers: { ...ghCabeceras(), "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        throw new Error(err.message || "GitHub respondió " + resp.status);
+      }
+      const data = await resp.json();
+      estadoSpan.textContent = sha ? "sobrescrito ✓" : "subido ✓";
+      if (data.content && data.content.html_url) {
+        const a = document.createElement("a");
+        a.href = data.content.html_url; a.target = "_blank"; a.rel = "noopener"; a.textContent = "Ver en GitHub";
+        fila.appendChild(a);
+      }
+      ok++;
+    } catch (err) {
+      estadoSpan.textContent = "error: " + err.message;
+    }
+  }
+
+  ghEstado.textContent = `Terminado: ${ok} de ${ghPendientes.length} subido(s). Si tenés GitHub Pages, tarda un minuto en reflejarse en la web.`;
+  ghSubir.disabled = false;
+});
+</script>
+   
 </body>
 </html>
