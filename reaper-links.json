@@ -7,5 +7,6 @@
   { "nombre": "TFM Dressing", "vector": "https://static.wikia.nocookie.net/transformice/images/5/55/Piel_Leopardo_de_las_nieves.png/revision/latest?cb=20140224134502&path-prefix=es", "web": "https://projects.fewfre.com/a801/transformice/dressroom/" },
   { "nombre": "Miceditor", "vector": "https://static.wikia.nocookie.net/transformice/images/5/5c/Mouse.png/revision/latest/scale-to-width-down/284?cb=20240126163323", "web": "https://entibo.github.io/miceditor/" },
   { "nombre": "I ❤️ PDF", "vector": "https://cdn.aptoide.com/imgs/d/d/7/dd7b41dd5b8f4a4fb75d3844197eeb49_icon.png", "web": "https://www.ilovepdf.com" },
-  { "nombre": "Scribd", "vector": "https://assets.production.scribd.com/mfe-scribd-landing-pages/_next/static/media/scribd_app_icon.1j_u0n31or9g9.svg", "web": "https://www.scribd.com" }
+  { "nombre": "Scribd", "vector": "https://assets.production.scribd.com/mfe-scribd-landing-pages/_next/static/media/scribd_app_icon.1j_u0n31or9g9.svg", "web": "https://www.scribd.com" },
+  { "nombre": "Everand", "vector": "https://s3-eu-west-1.amazonaws.com/tpd/logos/6545642b944582b2cb2186aa/0x0.png", "web": "https://www.everand.com" }
 ]
